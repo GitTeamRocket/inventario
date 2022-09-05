@@ -1,0 +1,18 @@
+{
+    "development": {
+        "username": "de0vz8qkO8",
+        "password": "WCC9fJCv1F",
+        "database": "de0vz8qkO8",
+        "host": "remotemysql.com",
+        "dialect": "mysql",
+        "logging": false
+    },
+    "test": {
+        "dialect": "mysql",
+        "storage": "dummy"
+    },
+    "production": {
+        "dialect": "mysql",
+        "storage": "dummy"
+    }
+}

@@ -1,0 +1,83 @@
+/* ALERT STYLES */
+.a-container {
+  position: absolute;
+  right: 20px;
+  top: 30px;
+  width: 400px;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--white);
+  box-shadow: 0px 3px 6px #00000029;
+  animation-duration: 0.5s;
+  animation-name: fadein;
+  animation-fill-mode: forwards;
+}
+
+.a-icon-container {
+  width: 60px;
+  height: inherit;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.a-icon {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.a-body-container {
+  font-size: 13px;
+  width: 310px;
+  color: var(--title-gray);
+  padding: 10px 10px 10px 20px;
+}
+
+.a-close-container {
+  padding-right: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ALERT TYPES COLORS */
+.attention-border {
+  border: 1px solid var(--attention);
+}
+
+.attention-background {
+  background-color: var(--attention);
+}
+
+.success-border {
+  border: 1px solid var(--success);
+}
+
+.success-background {
+  background-color: var(--success);
+}
+
+.error-border {
+  border: 1px solid var(--error);
+}
+
+.error-background {
+  background-color: var(--error);
+}
+
+/* ALERT ANIMATIONS */
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100;
+  }
+}

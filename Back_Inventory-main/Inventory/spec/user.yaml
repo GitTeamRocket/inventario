@@ -1,0 +1,408 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Juan David González Mosquera"
+    email: "juan_d.gonzalez_m@uao.edu.co"
+
+paths:
+  /user/create:
+    post:
+      tags:
+        - "User"
+      summary: "Create User"
+      description: "We can create user with this service"
+      operationId: "create"
+      requestBody:
+        description: "user information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                user_name:
+                  type: "string"
+                  example: "test"
+                email: 
+                  type: "string"
+                  example: "test@example.com"
+                branch:
+                  type: "string"
+                  example: "Lobato"
+                phone:
+                  type: "string"
+                  example: "310999999"
+                password:
+                  type: "string"
+                  example: "password"
+                rol:
+                  type: "string"
+                  example: "jefe de rama"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Usuario creado con éxito."
+        409:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "El correo electrónico ya se encuentra en uso."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+  /user/detail:
+    get:
+      tags:
+        - "user"
+      summary: "List of one user"
+      description: "We can list one user with this service"
+      operationId: "List one user"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/detail" 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay registro en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /user/recoverp:
+    put:
+      tags:
+        - "user"
+      summary: "Recover the password of one user part1"
+      description: "We can recover the password of one user,this is the first part"
+      operationId: "Recover pass Pt 1"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                 message: 
+                    type: "string"
+                    example: "Envio exitoso."
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay Usuario en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+  /user/tokenv:
+    get:
+      tags:
+        - "user"
+      summary: "Token Verification"
+      description: "We can verify the token with this service"
+      operationId: "change password parte 2"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  id:
+                    type: "integer"
+                    example: 1
+                  user_name:
+                    type: "string"
+                    example: "mariano"
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Ingrese un token valido"
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+    /user/passwd:
+    post:
+      tags:
+        - "User"
+      summary: "Update User"
+      description: "We can update the password of one user"
+      operationId: "update"
+      requestBody:
+        description: "change password final part"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties:
+                passwd_new:
+                  type: "string"
+                  example: "YanoSoydeGoogle" 
+                passwd_compare:
+                  type: "string"
+                  example: "YanoSoydeGoogle"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Usuario modificado con éxito."
+                    
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Ingrese un id valido"
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /user/login:
+    post:
+      tags:
+        - "User"
+      summary: "Login User"
+      description: "We can login user with this service"
+      operationId: "login"
+      requestBody:
+        description: "user information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                email: 
+                  type: "string"
+                  example: "test@example.com"
+                password:
+                  type: "string"
+                  example: "password"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Bienvenido."
+                  token:
+                    type: "string"
+                    example: "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcl9uYW1lIjoianVhbmRhdmlkIiwiZW1haWwiOiJHb256YWxlekBleGFtcGxlLmNvbSIsImlhdCI6MTYxODA4MDc3NSwiZXhwIjoxNjE4MTY3MTc1fQ.xfkujqKrw4DYiIBWpKDCXAzJ5EynB11XzFwDx5BwrUg"
+                  $ref: "#/components/schemas/userlogin"            
+        401:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Error en el ususario o contraseña."
+        404: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Error en el ususario o contraseña."
+  /user/update:
+    post:
+      tags:
+        - "User"
+      summary: "Update User"
+      description: "We can update user information with this service"
+      operationId: "update"
+      requestBody:
+        description: "user information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties:
+                id:
+                  type: "integer"
+                  format: "int64" 
+                user_name:
+                  type: "string"
+                  example: "test"
+                email: 
+                  type: "string"
+                  example: "test@example.com"
+                branch:
+                  type: "string"
+                  example: "Lobato"
+                phone:
+                  type: "string"
+                  example: "310999999"
+                rol:
+                  type: "string"
+                  example: "jefe de rama"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Usuario modificado con éxito."        
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+components:
+  schemas:
+    userlogin:
+      type: "object"
+      required:
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 10
+              name:
+                type: "string"
+                example: "test"
+              email:
+                type: "string"
+                example: "test@example.com"
+    detail:
+      type: "object"
+      required:
+       - "id"
+      properties:
+        data:
+          type: "object"
+          items:
+            type: "object"
+            properties:
+              user_name:
+                type: "string"
+                example: "Juan David"
+              email:
+                type: "string"
+                example: "juanda@google.com"
+              branch:
+                type: "string"
+                example: "lobatos"
+              phone:
+                type: "string"
+                example: "315561111"
+              password:
+                type: "string"
+                example: "123abcSoydeGoogle"
+              rol:
+                type: "string"
+                example: "administrador"
+                
+      
+
+  
+          

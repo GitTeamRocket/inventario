@@ -1,0 +1,148 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Juan David González Mosquera"
+    email: "juan_d.gonzalez_m@uao.edu.co"
+
+paths:
+  /warehouse/create:
+    post:
+      tags:
+        - "warehouse"
+      summary: "Create warehouse"
+      description: "We can create warehouses with this service"
+      operationId: "Create"
+      requestBody:
+        description: "warehouse information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                warehouse_name:
+                  type: "string"
+                  example: "Bodega#2"
+                email: 
+                  type: "string"
+                  example: "test@example.com"
+                address:
+                  type: "string"
+                  example: "Calle 31 # A 3 - 40"
+                desc:
+                  type: "string"
+                  example: "Bodega de almacenado"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Bodega creada con exito."
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "El correo electronico no se encuentra registrado."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /warehouse/list:
+    get:
+      tags:
+        - "warehouse"
+      summary: "list warehouse"
+      description: "We can list warehouse with this service"
+      operationId: "list"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  $ref: "#/components/schemas/warehouse"       
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay bodegas en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+components:
+  schemas:
+    warehouse:
+      type: "object"
+      properties:
+         data:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 10
+              warehouse_name:
+                type: "string"
+                example: "Bodega#1"
+              address:
+                type: "string"
+                example: "Calle 31 A 3 - 40"
+              desc:
+                type: "string"
+                example: "Bodega de Almacenado"
+              user_fk: 
+                type: "integer"
+                example: 3
+              createdAt:
+                type: "date"
+                example: "2021-04-10T17:57:36.000Z"
+              updatedAt:
+                type: "date"
+                example: "2021-04-10T17:57:36.000Z"
+              encargado: 
+                type: "object"
+                properties:
+                  user_name: 
+                    type: "string"
+                    example: "test"
+                  email: 
+                    type: "string"
+                    example: "test@example.com"
+                  phone: 
+                    type: "string"
+                    example: "3019999999"

@@ -1,0 +1,393 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Juan David González Mosquera"
+    email: "juan_d.gonzalez_m@uao.edu.co"
+
+paths:
+  /returning/create:
+    post:
+      tags:
+        - "returning"
+      summary: "Create returning"
+      description: "We can create returning with this service"
+      operationId: "Create"
+      requestBody:
+        description: "returning information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                state:
+                  type: "string"
+                  example: "funcional"
+                obs:
+                  type: "string"
+                  example: 'Objetos devueltos en buen estado'
+                borrowing_fk: 
+                  type: "integer"
+                  example: 4
+                auth_user_fk: 
+                  type: "integer"
+                  example: 1
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "La solicitud de devolución se ha creado con éxito."
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No es posible realizar una solicitud de devolución a un préstamo que no ha sido Aprobado."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /returning/list:
+    get:
+      tags:
+        - "returning"
+      summary: "List returning"
+      description: "We can list returnings with this service"
+      operationId: "List"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/returning"  
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de devolución en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+  /returning/detail:
+    get:
+      tags:
+        - "returning"
+      summary: "List One returning"
+      description: "We can list One returning with this service"
+      operationId: "List One"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/returning"  
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No Existe ese Returning en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /returning/update:
+    get:
+      tags:
+        - "returning"
+      summary: "Update one returning"
+      description: "We can update One returning with this service"
+      operationId: "Update"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Actualizado con exito."    
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /returning/approved:
+    put:
+      tags:
+        - "returning"
+      summary: "approved returning"
+      description: "We can approved returnings with this service"
+      operationId: "Approved"
+      requestBody:
+        description: "returning information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                id:
+                  type: "integer"
+                  example: 1
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "La solicitud de devolución ha sido Aprobada." 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de devolución en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /returning/rejected:
+    put:
+      tags:
+        - "returning"
+      summary: "rejected returning"
+      description: "We can rejected returnings with this service"
+      operationId: "Rejected"
+      requestBody:
+        description: "returning information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                id:
+                  type: "integer"
+                  example: 1
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "La solicitud de devolución ha sido Denegada." 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de devolución en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /returning/makefile:
+    get:
+      tags:
+        - "returning"
+      summary: "make file xlsx of returnings"
+      description: "We can make file of returnings request in xlsx with this service"
+      operationId: "makefile"
+      404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message: 
+                    type: "string"
+                    example: "Error al generar el archivo."
+      500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+components:
+  schemas:
+    returning:
+      type: "object"
+      required:
+        - "name"
+      properties:
+        data:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 10
+              label:
+                type: "string"
+                example: "CAM-CAR-LOB-003"
+              auth_state:
+                  type: "string"
+                  example: "Pendiente"
+              state: 
+                  type: "string"
+                  example: "funcional"
+              obs:
+                  type: "string"
+                  example: null
+              borrowing_fk: 
+                  type: "integer"
+                  example: 2
+              auth_user_fk: 
+                  type: "integer"
+                  example: 4   
+              createdAt: 
+                  type: "string"
+                  example: "2021-04-08T04:30:46.000Z"
+              updatedAt: 
+                  type: "string"
+                  example: "2021-04-08T04:30:46.000Z"
+              solicitud: 
+                  type: "object"
+                  properties:
+                    auth_state: 
+                      type: "string"
+                      example: "Aprobada"
+                    pick_up_date: 
+                      type: "string"
+                      example: "2021-04-08T09:30:46.000Z"
+                    return_date: 
+                      type: "string"
+                      example: "2021-04-08T09:30:46.000Z"
+              evaluador: 
+                  type: "object"
+                  properties:
+                    user_name: 
+                      type: "string"
+                      example: "test"
+                    email: 
+                      type: "string"
+                      example: "test@example.com"
+                    phone: 
+                      type: "string"
+                      example: "4009876556"
+              article_list: 
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id: 
+                        type: "integer"
+                        example: 2
+                      borrowing_fk: 
+                        type: "integer"
+                        example: "4"
+                      article_fk:
+                        type: "integer"
+                        example: 79
+                      Articulo: 
+                        type: "object"
+                        properties: 
+                          id: 
+                            type: "integer"
+                            example: 79
+                          label:
+                            type: "string"
+                            example: "CAM-CARP-LOB-03"
+                          article_type_fk:
+                            type: "integer"
+                            example: 3
+                          Tipo:
+                            type: "object"
+                            properties: 
+                              classif: 
+                                type: "string"
+                                example: "Elementos de campamento"
+                              article_type:
+                                type: "string"
+                                example: "carpa pequeña"

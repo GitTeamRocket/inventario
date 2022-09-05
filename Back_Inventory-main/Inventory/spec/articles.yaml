@@ -1,0 +1,370 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Juan David González Mosquera"
+    email: "juan_d.gonzalez_m@uao.edu.co"
+
+paths:
+  /article/create:
+    post:
+      tags:
+        - "article"
+      summary: "Create article"
+      description: "We can create article with this service"
+      operationId: "Create"
+      requestBody:
+        description: "article information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                available_state:
+                  type: "string"
+                  example: "disponible"
+                physical_state: 
+                  type: "string"
+                  example: "funcional"
+                branch:
+                  type: "string"
+                  example: "Lobato"
+                obs:
+                  type: "string"
+                  example: null
+                warehouse_fk: 
+                  type: "integer"
+                  example: 2
+                article_type_fk: 
+                  type: "integer"
+                  example: 4
+                secondary_article_list:
+                  type: "object"
+                  properties:
+                      data:
+                        type: "array"
+                        items:
+                          type: "object"
+                          properties:
+                            available_state:
+                              type: "string"
+                              example: "disponible"
+                            physical_state: 
+                              type: "string"
+                              example: "funcional"
+                            branch:
+                              type: "string"
+                              example: "Lobato"
+                            obs:
+                              type: "string"
+                              example: null
+                            warehouse_fk: 
+                              type: "integer"
+                              example: 2
+                            article_type_fk: 
+                              type: "integer"
+                              example: 4                
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "El artículo fue creado con éxito."
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No es posible realizar la creación y asociación del artículo."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /article/list:
+    get:
+      tags:
+        - "article"
+      summary: "list articles"
+      description: "We can list articles with this service"
+      operationId: "list"
+      parameters:
+        - name: "article_type"
+          in: "query"
+          description: "id used to filter articles by article type"
+          required: false
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "warehouse_id"
+          in: "query"
+          description: "id used to filter articles by warehouses"
+          required: false
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "branch"
+          in: "query"
+          description: "branch to which the article belongs"
+          required: false
+          schema:
+            type: "string"
+            example: "Lobatos"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/article"       
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay artículos en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /article/update:
+    put:
+      tags:
+        - "article"
+      summary: "update articles"
+      description: "We can update articles with this service"
+      operationId: "update"
+      requestBody:
+        description: "article information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                id:
+                  type: "integer"
+                  example: 1
+                available_state:
+                  type: "string"
+                  example: "disponible"
+                physical_state: 
+                  type: "string"
+                  example: "funcional"
+                branch:
+                  type: "string"
+                  example: "Lobato"
+                obs:
+                  type: "string"
+                  example: null
+                warehouse_fk: 
+                  type: "integer"
+                  example: 2
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message: 
+                    type: "string"
+                    example: "El artículo y sus articulos asociados fueron modificados con éxito."
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message: 
+                    type: "string"
+                    example: "El artículo fue modificado con éxito."      
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /article/makefile:
+    get:
+      tags:
+        - "article"
+      summary: "make file xlsx of articles"
+      description: "We can make file of articles in xlsx with this service"
+      operationId: "makefile"
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message: 
+                    type: "string"
+                    example: "Error al generar el archivo."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+components:
+  schemas:
+    article:
+      type: "object"
+      required:
+        - "name"
+      properties:
+        count:
+          type: "integer"
+          example: 1
+        data:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                example: 10
+              label:
+                type: "string"
+                example: "CAM-CAR-LOB-003"
+              available_state:
+                  type: "string"
+                  example: "disponible"
+              physical_state: 
+                  type: "string"
+                  example: "funcional"
+              branch:
+                  type: "string"
+                  example: "Lobato"
+              obs:
+                  type: "string"
+                  example: null
+              warehouse_fk: 
+                  type: "integer"
+                  example: 2
+              article_type_fk: 
+                  type: "integer"
+                  example: 4                  
+              Tipo: 
+                  type: "object"
+                  properties:
+                    id: 
+                      type: "integer"
+                      example: 2
+                    article_type_name: 
+                      type: "string"
+                      example: "Linterna"
+                    is_parent: 
+                      type: "integer"
+                      example: 0
+                    desc: 
+                      type: "string"
+                      example: "Linterna"
+                    classif: 
+                      type: "string"
+                      example: "Elementos para acampar"
+                    createdAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"
+                    updatedAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"
+              Bodega: 
+                  type: "object"
+                  properties:
+                    id: 
+                      type: "integer"
+                      example: 2
+                    warehouse_name: 
+                      type: "string"
+                      example: "Bodega#1"
+                    address: 
+                      type: "string"
+                      example: "Calle 31 # A 3 - 40"
+                    desc: 
+                      type: "string"
+                      example: "Bodega de Almacenado"
+                    user_fk: 
+                      type: "integer"
+                      example: 2
+                    createdAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"
+                    updatedAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"
+              Asociado: 
+                  type: "object"
+                  properties:
+                    id: 
+                      type: "integer"
+                      example: 2
+                    label: 
+                      type: "string"
+                      example: "CAM-CAR-LOB-001"
+                    available_state:
+                      type: "string"
+                      example: "disponible"
+                    physical_state: 
+                      type: "string"
+                      example: "funcional"
+                    branch:
+                      type: "string"
+                      example: "Lobato"
+                    obs:
+                      type: "string"
+                      example: null
+                    warehouse_fk: 
+                      type: "integer"
+                      example: 2
+                    article_type_fk: 
+                      type: "integer"
+                      example: 2                
+                    createdAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"
+                    updatedAt: 
+                      type: "string"
+                      example: "2021-04-08T04:30:46.000Z"

@@ -1,0 +1,331 @@
+/* LOGIN HEADER */
+.lg-header {
+  width: 100%;
+  height: 48px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: var(--scout-red) solid 5px;
+}
+
+.lg-title {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: var(--title-gray);
+}
+
+.lg-text {
+  font-size: 12px;
+  color: var(--body-gray);
+}
+
+/* LOGIN FORM */
+.lg-form {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-button {
+  height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  color: var(--white);
+  font-size: 14px;
+  outline: none;
+  background-color: var(--scout-red);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lg-button:hover {
+  background-color: var(--scout-red-hover);
+}
+
+/* LOGIN LEGEND */
+hr {
+  width: 100px;
+  border-width: 0px;
+  border-top: var(--soft-gray) solid 1px;
+}
+
+.lg-legend-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 23px;
+}
+
+.lg-logo-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.lg-logo {
+  width: 323px;
+  height: 80px;
+}
+
+/* LOGIN OTHERS */
+.lg-container {
+  width: 100vw;
+  height: 100vh;
+  min-width: 546px;
+  min-height: 570px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.lg-card {
+  width: 520px;
+  height: 542px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+}
+
+.lg-content {
+  margin: 50px 60px;
+  width: 100%;
+  height: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+}
+
+.lg-link {
+  width: 100%;
+  font-size: 11px;
+  text-align: center;
+  color: var(--link-blue);
+}
+
+
+/* Header del formulario for Recover Password */
+
+
+
+*, *:before, *:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-header-step: orange;
+  --color-border-input: #ddd;
+}
+
+
+/* Header del formulario */
+
+/* Progressbar */
+.progressbar {
+  min-width: 60%;
+  width: 60%;
+  display: flex;
+  list-style: none;
+  margin-bottom: 15px;
+  counter-reset: step;
+}
+
+.progressbar__option {
+  width: 100%;
+  text-align: center;
+  font-size: .7rem;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.progressbar__option:before {
+  display: flex;
+  content: counter(step);
+  color: var(--white);
+  counter-increment: step;
+  width: 20px;
+  height: 20px;
+  background-color: var(--white);
+  margin: 0 auto 5px;
+  border-radius: 15px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+
+.progressbar__option:after {
+  display: block;
+  content: '';
+  width: 100%;
+  height: 2px;
+  background-color: var(--white);
+  position: absolute;
+  top: 10px;
+  left: -50%;
+  z-index: 1;
+}
+
+.progressbar__option:first-child:after {
+  content: none;
+}
+
+.progressbar__option.active:before, .progressbar__option.active:after {
+  background-color: #b31d1d;
+}
+
+/* header del formulario */
+.recp-header {
+  width: 100%;
+  height: 60px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: #b31d1d solid 5px;
+}
+
+.form-register__header {
+  display: flex;
+  justify-content: center;
+  min-height: 50px;
+}
+
+/* body del formulario */
+.form-register__body {
+  display: flex;
+  align-items: flex-start;
+  min-height: 180px;
+}
+
+.global-text-mandatory {
+  font-size: 12px;
+  color: #b31d1d;
+}
+
+.recp-form-img-container {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f4f7;
+}
+
+/* step */
+.step {
+  background-color: white;
+  min-width: 100%;
+  opacity: 0;
+  transition: all .2s linear;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+.step.to-left {
+  margin-left: -100%;
+}
+
+.step.inactive {
+  animation-name: scale;
+  animation-duration: .2s;
+  animation-direction: alternate;
+  animation-iteration-count: 2;
+}
+
+@keyframes scale {
+  from {
+      transform: scale(1);
+  }
+  to {
+      transform: scale(1.1);
+  }
+}
+
+/* header de step */
+.step__header {
+  padding: 20px 15px;
+  border-radius: 3px 3px 0 0;
+}
+
+.step__title {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+/* body de step */
+.step__body {
+  padding: 5px 15px 0;
+}
+
+/* step inputs */
+.step__input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-input);
+}
+
+/* step footer */
+.step__footer {
+  margin-top: 20px;
+  padding: 0px 15px;
+  text-align: center;
+}
+
+/* step botones */
+.step__button {
+  display: inline-block;
+  padding: 10px;
+  width: 100px;
+  border-radius: 5px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  background-color: #b31d1d;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.step__button:hover {
+  background-color: #db2424;
+}
+
+.step__button_back {
+  display: inline-block;
+  padding: 10px;
+  margin-right: 20px;
+  width: 100px;
+  border-radius: 5px;
+  color: var(--scout-red);
+  font-size: 14px;
+  outline: none;
+  background-color: white;
+  border: 1px solid #db2424;
+  cursor: pointer;
+  margin-left: 15px;
+  transition: all 0.3s;
+}
+
+.step__button_back:hover {
+  box-shadow: 3px 6px 6px #00000029;
+}
