@@ -230,9 +230,9 @@ class ListArticle extends Component {
   }
 
   // Functions to handle modal
-  showModal(name, label, obs) {
+  showModal(name, label, obs, image_url) {
     return this.props.showModal(
-      <Modal name={name} label={label} obs={obs} closeModal={this.closeModal} />
+      <Modal name={name} label={label} obs={obs} image_url={image_url} closeModal={this.closeModal} />
     )
   }
 
@@ -269,7 +269,7 @@ class ListArticle extends Component {
             <td>
               <span
                 className='global-table-link'
-                onClick={() => this.showModal(obj.name, obj.label, obj.obs)}
+                onClick={() => this.showModal(obj.name, obj.label, obj.obs, obj.image_url)}
               >
                 Ver más
               </span>

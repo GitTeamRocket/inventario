@@ -24,7 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     obs: DataTypes.STRING,
     article_type_fk: DataTypes.INTEGER,
     warehouse_fk: DataTypes.INTEGER,
-    article_fk: DataTypes.INTEGER
+    article_fk: DataTypes.INTEGER,
+    image_url: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'article',

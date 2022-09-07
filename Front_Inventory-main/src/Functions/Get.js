@@ -186,9 +186,9 @@ export function getArticles(warehouse, article_type, branch, responseHandler) {
           name: obj.Tipo.article_type_name,
           classif: obj.Tipo.classif,
           warehouse_fk: obj.Bodega.id,
+          image_url: obj.image_url
         })
       }
-
       return responseHandler('success', articles)
     })
     .catch((error) => responseHandler('error', error))

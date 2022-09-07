@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import {
+  IMAGE_HOST
+} from '../../Functions/Constants'
 import './Styles.css'
 
 class Modal extends Component {
@@ -33,6 +36,13 @@ class Modal extends Component {
             </div>
             <div className='global-modal-group-container'>
               <p className='global-modal-text'>{this.props.obs}</p>
+            </div>
+
+            <div className='global-modal-group-container'>
+              <span className='global-form-label'>Imagen del artículo</span>
+              <span className='global-modal-text'>
+                <img src={`${IMAGE_HOST}${this.props.image_url}`} width={500}/>
+              </span>
             </div>
           </div>
         </div>

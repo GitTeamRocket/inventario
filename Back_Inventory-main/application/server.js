@@ -6,9 +6,21 @@ const fs = require('fs');
 const https = require('https');
 const crPath = '/etc/letsencrypt/live/inventario.scoutscentinelas113cali.org/cert.pem';
 const pkPath = '/etc/letsencrypt/live/inventario.scoutscentinelas113cali.org/privkey.pem';
+const multer = require('multer');
+const path = require('path');
 
 //instancia de express en app
 const app = express();
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, path.join(__dirname, '/article_images_uploads'));
+    },
+    filename: function(req, file, cb){
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, `${file.originalname}-${uniqueSuffix}`);
+    }
+});
+
 app.use(cors());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
@@ -21,7 +33,11 @@ app.use((req, res, next) => {
 app.set('port', process.env.PORT || 3002);
 app.set('portdevelopment', process.env.PORT || 3001);
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(multer({storage}).single('files'));
+
+//Archivos estaticos
+app.use('/static', express.static(path.join(__dirname, '/article_images_uploads')));
 
 //routes
 app.use('/api', apiRouter);

@@ -46,6 +46,7 @@ export const ROL_TYPES = [
 export const HOST = REACT_APP_HOST
   ? REACT_APP_HOST
   : 'http://localhost:3001/api/'
+export const IMAGE_HOST = 'http://localhost:3001/static/'
 export const LOGIN = 'user/login'
 export const LIST_USERS = 'user/list'
 export const USERS_BY_ID = 'user/detail'

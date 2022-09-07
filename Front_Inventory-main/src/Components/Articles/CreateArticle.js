@@ -4,7 +4,7 @@ import './Styles.css'
 import Alert from '../Alerts/Alert'
 import SecondaryForm from './SecondaryForm'
 import { setSelectOptions, validateString } from '../../Functions/Helpers'
-import { simpleRequest } from '../../Functions/Post'
+import { simpleRequestWithFiles } from '../../Functions/Post'
 import { getWarehouses, getArticleTypes } from '../../Functions/Get'
 import {
   CREATE_ARTICLE,
@@ -31,6 +31,7 @@ class CreateArticle extends Component {
       obs: '',
       warehouse_fk: 0,
       article_type_fk: 0,
+      files: [],
 
       // Auxiliary form states
       classif: '',
@@ -90,10 +91,14 @@ class CreateArticle extends Component {
     }
 
     if (attribute == 'classif') {
-      getArticleTypes(value, this.setArticleTypes)
+      getArticleTypes(value, this.setArticleTypes);
     }
 
-    return this.setState({ [attribute]: value })
+    if (attribute == 'files') {
+      return this.setState({[attribute]: event.target.files[0]});
+    }
+
+    return this.setState({ [attribute]: value });
   }
 
   clearInputs = () => {
@@ -207,6 +212,7 @@ class CreateArticle extends Component {
       obs: this.state.obs,
       warehouse_fk: this.state.warehouse_fk,
       article_type_fk: this.state.article_type_fk,
+      files: this.state.files
     }
 
     if (this.state.secondary_articles.length > 0) {
@@ -224,7 +230,7 @@ class CreateArticle extends Component {
       }
     }
 
-    return simpleRequest(CREATE_ARTICLE, 'POST', body, this.responseHandler)
+    return simpleRequestWithFiles(CREATE_ARTICLE, 'POST', body, this.responseHandler)
   }
 
   // Auxiliary functions
@@ -424,7 +430,7 @@ class CreateArticle extends Component {
           con <strong className='global-form-mandatory'>*</strong> son
           obligatorios.
         </span>
-        <div className='global-comp-form-container'>
+        <div className='global-comp-form-container' encType="multipart/form-data">
           <span className='global-comp-sub-title'>ARTÍCULO PRINCIPAL</span>
           <div className='global-form-group'>
             <span className='global-form-label'>
@@ -569,8 +575,10 @@ class CreateArticle extends Component {
           <div className='global-form-group'>
             <span className='global-form-label'>Añadir Imagen</span>
             <input
-              id='obs'
+              id='files'
               type='file'
+             // value={this.state.files}
+              onChange={this.handleChange}
             />
           </div>
 

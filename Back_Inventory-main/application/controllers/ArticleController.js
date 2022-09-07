@@ -16,7 +16,8 @@ exports.create = async (req, res, next) => {
                     branch: req.body.branch,
                     warehouse_fk: req.body.warehouse_fk,
                     article_type_fk: req.body.article_type_fk,
-                    obs: req.body.obs
+                    obs: req.body.obs,
+                    image_url: req.file.filename
                 });
                 res.status(200).send({
                     message: 'El artículo fue creado con éxito.'
