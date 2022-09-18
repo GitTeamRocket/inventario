@@ -2,18 +2,24 @@
 :root {
   --scout-red: #b31d1d;
   --scout-red-hover: #db2424;
+  --scout-red-ripple: #ea6e6e;
   --title-gray: #646777;
   --body-gray: #999999;
   --background: #f2f4f7;
   --link-blue: #70bcfd;
   --white: #ffffff;
   --soft-gray: #dddddd;
+  --red-nav: #B31D1D;
 
   /* Alerts */
   --information: #70bbfd;
   --attention: #f6da6e;
   --success: #4ce1b6;
   --error: #ff4861;
+
+  /*menu*/
+  --menu-hover: #f0939329
+
 }
 
 body {
@@ -160,6 +166,7 @@ ul li::before {
   border: none;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
 }
 
 .global-form-solid-button:hover {
@@ -315,4 +322,35 @@ ul li::before {
   border: 1px solid var(--background);
   transition: border 0.3s;
   cursor: pointer;
+}
+
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+
+.ripple:hover {
+  background: var(--scout-red-hover) radial-gradient(circle, transparent 1%, var(--scout-red-hover) 1%) center/15000%;
+}
+
+.ripple:active {
+  background-color: var(--scout-red-ripple);
+  background-size: 100%;
+  transition: background 0s;
+}
+
+.ripple-outline {
+  background-position: center;
+  transition: background 0.8s;
+}
+
+.ripple-outline:hover {
+  background: var(--white) radial-gradient(circle, transparent 1%, var(--white) 1%) center/15000%;
+}
+
+.ripple-outline:active {
+  background-color: var(--scout-red-ripple);
+  background-size: 100%;
+  transition: background 0s;
 }
