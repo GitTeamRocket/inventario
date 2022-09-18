@@ -204,13 +204,13 @@ class CreateWarehouse extends Component {
           <div className='global-form-buttons-container'>
             <button
               onClick={this.createWarehouse}
-              className='global-form-solid-button'
+              className='global-form-solid-button ripple'
             >
               Enviar
             </button>
             <button
               onClick={this.clearInputs}
-              className='global-form-outline-button'
+              className='global-form-outline-button ripple-outline'
             >
               Cancelar
             </button>

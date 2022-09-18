@@ -219,7 +219,7 @@ class LoginView extends Component {
               <hr></hr>
             </div>
             <div className='lg-logo-container'>
-              <img className='lg-logo' src='./logo_valle_gray.png' alt='logo' />
+              <img className='lg-logo' src='./logo_Rocket.png' alt='logo' />
             </div>
           </div>
         </div>
