@@ -176,6 +176,12 @@ class MenuView extends Component {
             closeModal={this.closeModal}
           />
         )
+      case 17:
+        return (
+          <ListWarehouses
+            changeSelected={this.changeSelectedFromComponent}
+          />
+        )
       default:
         return <div></div>
     }
