@@ -7,7 +7,7 @@ router.post('/login', UserController.login);
 
 router.put('/update', UserController.update);
 
-router.get('/list', auth.verifyAdmin, UserController.list);
+router.get('/list',  UserController.list);
 router.get('/detail', UserController.detail);
 
 router.put('/recover_pass', UserController.recoverp);

@@ -47,3 +47,26 @@ exports.list = async(req, res, next)=>{
         next(error);    
     }
 };
+
+exports.update = async (req, res, next) => {
+    try {
+        const registro = await db.warehouse.update({
+            warehouse_name: req.body.warehouse_name,
+            desc: req.body.desc,
+            address: req.body.address
+        },
+            {
+                where: {
+                    id: req.body.id
+                },
+            });       
+        res.status(200).send({
+            message: 'Bodega modificada con éxito.'
+        });
+    } catch (error) {
+        res.status(500).send({
+            error: '¡Error en el servidor!'
+        });
+        next(error);
+    }
+};
