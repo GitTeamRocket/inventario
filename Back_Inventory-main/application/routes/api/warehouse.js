@@ -7,4 +7,6 @@ router.get('/list',  WarehouseController.list);
 
 router.put('/update', WarehouseController.update);
 
+router.get('/detail', WarehouseController.detail);
+
 module.exports = router;
