@@ -55,6 +55,8 @@ export const MODIFY_USER = 'user/update'
 
 export const CREATE_WAREHOUSE = 'warehouse/create'
 export const LIST_WAREHOUSES = 'warehouse/list'
+export const MODIFY_WAREHOUSE = 'warehouse/update'
+export const WAREHOUSES_BY_ID = 'warehouse/detail'
 
 export const CREATE_ARTICLE_TYPE = 'article_type/create'
 export const ARTICLE_TYPE_LIST = 'article_type/list'

@@ -7,6 +7,7 @@ import ModifyUser from '../Users/ModifyUser'
 import CreateArticleType from '../ArticleType/CreateArticleType'
 import CreateWarehouse from '../Warehouses/CreateWarehouse'
 import ListWarehouses from '../Warehouses/ListWarehouses'
+import ModifyWarehouse from '../Warehouses/ModifyWarehouse'
 import ListArticle from '../Articles/ListArticle'
 import CreateArticle from '../Articles/CreateArticle'
 import ModifyArticle from '../Articles/ModifyArticle'
@@ -182,6 +183,9 @@ class MenuView extends Component {
             changeSelected={this.changeSelectedFromComponent}
           />
         )
+      case 18:
+          // MODIFY RETURNING
+          return <ModifyWarehouse />
       default:
         return <div></div>
     }

@@ -42,7 +42,7 @@ class ListWarehouses extends Component {
 
   routeEdit = (event) => {
     let id = event.target.id.split('-')
-    sessionStorage.setItem('edit_user_id', id[1])
+    sessionStorage.setItem('edit_warehouse_id', id[18])
 
     return this.props.changeSelected(3)
   }
