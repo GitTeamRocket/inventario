@@ -3,6 +3,8 @@ const WarehouseController = require('../../controllers/WarehouseController');
 const auth = require('../../middleware/auth');
 
 router.post('/create', auth.verifyAdmin, WarehouseController.create);
-router.get('/list', auth.verifyBranchChief,WarehouseController.list);
+router.get('/list',  WarehouseController.list);
+
+router.put('/update', WarehouseController.update);
 
 module.exports = router;
