@@ -13,11 +13,10 @@ exports.enviar = async (user, request_type, action_type, token, next) => {
         
         console.log("AQUI")
         let transporter = nodemailer.createTransport({
-            host: 'smtp.mailtrap.io',
-            port:2525, 
+            service:'gmail',
             auth: {
-                user: "512a6649c62086",
-                pass: "8464083e8eab32"
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD
             }
         });
 
