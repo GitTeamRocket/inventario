@@ -98,13 +98,6 @@ class ListWarehouses extends Component {
           <td>{obj.desc}</td>
           <td>{obj.address}</td>
           <td>
-            <span
-              id={'e-' + obj.id}
-              className='global-table-link'
-              onClick={this.routeEdit}
-            >
-              Editar
-            </span>
           </td>
         </tr>
       )
@@ -117,7 +110,6 @@ class ListWarehouses extends Component {
             <th>Nombre de la bodega</th>
             <th>Descripción</th>
             <th>Dirección</th>
-            <th>Acciones</th>
           </tr>
           {table_rows}
         </tbody>
