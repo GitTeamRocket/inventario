@@ -208,8 +208,8 @@ class CreateArticleType extends Component {
             />
             <span className='global-form-label'>
               ¿Es compuesto?
-              <span className='global-form-mandatory'> *</span>
-            </span>
+{/*               <span className='global-form-mandatory'> *</span>
+ */}            </span>
           </div>
           <div className='global-form-buttons-container'>
             <button
