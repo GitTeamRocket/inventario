@@ -1,6 +1,7 @@
 {
   "name": "front_inventory",
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "Proyecto informatico (frontend) inventario del grupo Scouts Centinelas 113",
   "private": true,
   "dependencies": {
     "file-saver": "^2.0.5",
@@ -12,8 +13,19 @@
   "scripts": {
     "start": "set PORT=3006 && react-scripts start",
     "build": "react-scripts build",
+    "deploy-qa": "npm run build && serve -s build -l 3007",
     "deploy": "serve -s build -l 3006"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GitTeamRocket/inventario"
+  },
+  "author": "TEAM ROCKET",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GitTeamRocket/inventario/issues"
+  },
+  "homepage": "https://github.com/GitTeamRocket/inventario",
   "browserslist": {
     "production": [
       ">0.2%",
