@@ -1,4 +1,4 @@
-const { REACT_APP_HOST } = process.env
+const { REACT_APP_NODE_ENV } = process.env
 
 // SELECT OPTIONS
 export const BRANCHES = [
@@ -43,9 +43,12 @@ export const ROL_TYPES = [
 ]
 
 // SERVICES
-export const HOST = REACT_APP_HOST
-  ? REACT_APP_HOST
-  : 'http://localhost:3001/api/'
+export const HOST = 
+  REACT_APP_NODE_ENV === 'production' ? 
+    process.env.REACT_APP_HOST_PROD :
+    REACT_APP_NODE_ENV === 'qa' ? 
+      process.env.REACT_APP_HOST_QA :
+        process.env.REACT_APP_HOST_DEV
 export const IMAGE_HOST = 'http://localhost:3001/static/'
 export const LOGIN = 'user/login'
 export const LIST_USERS = 'user/list'
