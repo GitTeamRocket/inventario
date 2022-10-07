@@ -9,6 +9,14 @@ const pkPath = '/etc/letsencrypt/live/inventario.scoutscentinelas113cali.org/pri
 const multer = require('multer');
 const path = require('path');
 
+//Vars
+let PORT;
+process.env.NODE_ENV === 'production' 
+    ? (PORT = process.env.PROD_PORT) :
+        process.env.NODE_ENV === 'test' 
+            ? (PORT = process.env.QA_PORT ) :
+                (PORT = process.env.DEV_PORT); 
+
 //instancia de express en app
 const app = express();
 const storage = multer.diskStorage({
@@ -30,8 +38,9 @@ app.use((req, res, next) => {
 });
 
 // settings
-app.set('port', process.env.PORT || 3002);
-app.set('portdevelopment', process.env.PORT || 3001);
+/*app.set('port', process.env.PROD_PORT || 3002);
+app.set('portdevelopment', process.env.DEV_PORT || 3001);
+*/
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(multer({storage}).single('files'));
@@ -47,20 +56,20 @@ if (fs.existsSync(crPath) && fs.existsSync(pkPath)) {
     https.createServer({
         cert: fs.readFileSync(crPath),
         key: fs.readFileSync(pkPath)
-    },app).listen(app.get('port'), (error) => {
+    },app).listen(PORT, (error) => {
             if (!error) {
-                console.log('Running encrypted');
-                console.log(`Server on port http://localhost:${app.get('port')}`);
+                console.log(`Running in ${process.env.NODE_ENV}`);
+                console.log(`Server on port http://localhost:${PORT} with SSH`);
             } else {
                 console.log(error);
             }
     });
 }
 else {
-    app.listen(app.get('portdevelopment'), (error) => {
+    app.listen(PORT, (error) => {
         if (!error) {
-            console.log('Running in development');
-            console.log(`Server on port http://localhost:${app.get('portdevelopment')}`);
+            console.log(`Running in ${process.env.NODE_ENV}`);
+            console.log(`Server on port http://localhost:${PORT}`);
         } else {
             console.log(error);
         }
