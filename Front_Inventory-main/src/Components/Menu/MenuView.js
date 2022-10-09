@@ -185,7 +185,7 @@ class MenuView extends Component {
         )
       case 18:
           // MODIFY RETURNING
-          return <ModifyWarehouse />
+          return <ModifyUser />
       default:
         return <div></div>
     }
