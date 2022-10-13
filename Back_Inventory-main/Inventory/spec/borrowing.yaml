@@ -1,0 +1,451 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Luis Felipe Suescum Perea"
+    email: "luis.suescum@uao.edu.co"
+
+paths:
+  /borrowing/create:
+    post:
+      tags:
+        - "borrowing"
+      summary: "Create borrowing"
+      description: "We can create an borrowing with this service"
+      operationId: "Create"
+      requestBody:
+        description: "borrowing information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                auth_state:
+                  type: "string"
+                  example: "Aprobada"
+                pick_up_date:
+                  type: "string"
+                  example: '2021-04-19 01:34:19'
+                return_date: 
+                  type: "string"
+                  example: '2021-05-19 01:34:19'
+                obs: 
+                  type: "string"
+                  example: "Sera devuelto en buen estado"
+                has_returning: 
+                  type: "boolean"
+                  example: "False"
+                user_fk: 
+                  type: "integer"
+                  example: "1"
+                auth_user_fk: 
+                  type: "integer"
+                  example: "1"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "El prestamo fue creado de forma correcta"
+        409:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No se seleccionaron articulos existentes"
+
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /borrowing/list:
+    get:
+      tags:
+        - "borrowing"
+      summary: "List of borrowings"
+      description: "We can list borrowings with this service"
+      operationId: "List"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/borrowing" 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay registros en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  
+
+  /borrowing/detail:
+    get:
+      tags:
+        - "borrowing"
+      summary: "List of borrowings"
+      description: "We can list one borrowing with this service"
+      operationId: "List one borrowing"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/borrowing_detail" 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay registro en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+  
+
+  /borrowing/approved:
+    put:
+      tags:
+        - "borrowing"
+      summary: "approved borrowing"
+      description: "We can approved borrowings with this service"
+      operationId: "Approved"
+      requestBody:
+        description: "returning information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                id:
+                  type: "integer"
+                  example: 1
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "La solicitud de devolución ha sido Aprobada." 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de prestamos en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /borrowing/update:
+    get:
+      tags:
+        - "borrowing"
+      summary: "Update one borrowing"
+      description: "We can update One borrowing with this service"
+      operationId: "Update"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Actualizado con exito."    
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."  
+                    
+  /borrowing/makefile:
+    get:
+      tags:
+        - "borrowing"
+      summary: "make file xlsx of borrowings"
+      description: "We can make file of returningborrowings request in xlsx with this service"
+      operationId: "makefile"
+      404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  message: 
+                    type: "string"
+                    example: "Error al generar el archivo."
+      500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+  
+
+  /borrowing/rejected:
+    put:
+      tags:
+        - "borrowing"
+      summary: "rejected borrowing"
+      description: "We can rejected borrowings with this service"
+      operationId: "Rejected"
+      requestBody:
+        description: "borrowing information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                id:
+                  type: "integer"
+                  example: 1
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "La solicitud de prestamo ha sido Denegada." 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de prestamo en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+
+
+
+
+
+
+components:
+ schemas:
+   borrowing:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 10
+            article_type_name:
+              type: "string"
+              example: "Utensilios de cocina"
+            is_parent:
+                type: "boolean"
+                example: "false"
+            desc: 
+                type: "string"
+                example: "funcional"
+            classif:
+                type: "string"
+                example: null
+            createdAt: 
+                type: "string"
+                example: "2021-04-08T04:30:46.000Z"
+            updatedAt: 
+                type: "string"
+                example: "2021-04-08T04:30:46.000Z"
+            Asociado:
+                type: "object"
+                properties:
+                    user_name:
+                       type: "string"
+                       example: "Luis"
+                    email:
+                       type: "string"
+                       example: "luis.suescum@uao.edu.co"
+            Autoriza:
+                type: "object"
+                properties:
+                    user_name:
+                        type: "string"
+                        example: "Natalia"
+                    email:
+                        type: "string"
+                        example: "natalia@uao.edu.co"
+
+   borrowing_detail:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      data:
+        type: "object"
+        items:
+          type: "object"
+          properties:
+            auth_state:
+              type: "string"
+              example: "Aprobado"
+            pick_up_date:
+              type: "string"
+              example: "2021-04-19 01:34:19"
+            return_date:
+                type: "string"
+                example: "2021-05-19 01:34:19"
+            obs: 
+                type: "string"
+                example: "funcional"
+            has_returning:
+                type: "boolean"
+                example: "false"
+            user_fk: 
+                type: "integer"
+                example: "1"
+            auth_user_fk: 
+                type: "integer"
+                example: "2"
+
+            Asociado:
+                type: "object"
+                properties:
+                    user_name:
+                       type: "string"
+                       example: "Luis"
+                    email:
+                       type: "string"
+                       example: "luis.suescum@uao.edu.co"
+            Autoriza:
+                type: "object"
+                properties:
+                    user_name:
+                        type: "string"
+                        example: "Natalia"
+                    email:
+                        type: "string"
+                        example: "natalia@uao.edu.co"
+            Articulo:
+                type: "object"
+                properties:
+                    label:
+                        type: "string"
+                        example: "Ejemplo"
+                    id:
+                        type: "integer"
+                        example: "1"
+                    warehouse_fk:
+                        type: "integer"
+                        example: "1"
+                    article_type_fk:
+                        type: "integer"
+                        example: "1"
+            Tipo:
+                type: "object"
+                properties:
+                    classif:
+                        type: "string"
+                        example: "Natalia"
+                    article_type_name:
+                        type: "string"
+                        example: "Utensilios de cocina"
+            Bodega:
+                type: "object"
+                properties:
+                    warehouse_name:
+                        type: "string"
+                        example: "Bodega de don Guarin" 

@@ -1,0 +1,142 @@
+openapi: "3.0.0"
+
+info:
+  title: "Inventory"
+  description: "This is the API specification of Inventory"
+  version: "1.0.0"
+  contact:
+    name: "Luis Felipe Suescum Perea"
+    email: "luis.suescum@uao.edu.co"
+
+paths:
+  /article_type/create:
+    post:
+      tags:
+        - "article_type"
+      summary: "Create article_type"
+      description: "We can create an article type with this service"
+      operationId: "Create"
+      requestBody:
+        description: "article_type information"
+        required: true
+        content: 
+          application/json: 
+            schema: 
+              type: object
+              properties: 
+                article_type_name:
+                  type: "string"
+                  example: "Utensilios de cocina"
+                is_parent:
+                  type: "boolean"
+                  example: 'False'
+                desc: 
+                  type: "integer"
+                  example: 'Obetos de cocina'
+                classif: 
+                  type: "string"
+                  example: "Cuchara"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "Tipo de artículo creado exitosamente.."
+        409:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "El tipo de artículo deseado ya existe."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+  /article_type/list:
+    get:
+      tags:
+        - "article_type"
+      summary: "List of article types"
+      description: "We can list article types with this service"
+      operationId: "List"
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                $ref: "#/components/schemas/article_type" 
+        404:
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "No hay constancias de devolución en el sistema."
+        500: 
+          description: "bad request"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  message: 
+                    type: "string"
+                    example: "¡Error en el servidor!."
+                    
+                    
+
+
+components:
+ schemas:
+   article_type:
+    type: "object"
+    required:
+      - "name"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            id:
+              type: "integer"
+              example: 10
+            article_type_name:
+              type: "string"
+              example: "Utensilios de cocina"
+            is_parent:
+                type: "boolean"
+                example: "false"
+            desc: 
+                type: "string"
+                example: "funcional"
+            classif:
+                type: "string"
+                example: null
+            createdAt: 
+                type: "string"
+                example: "2021-04-08T04:30:46.000Z"
+            updatedAt: 
+                type: "string"
+                example: "2021-04-08T04:30:46.000Z"
