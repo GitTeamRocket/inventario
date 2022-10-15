@@ -71,7 +71,7 @@ class CreateWarehouse extends Component {
   responseHandler = (response, body) => {
     if (response == 'success') {
       this.buildAlert('success', 'Bodega creada con éxito.')
-      sessionStorage.removeItem('warehouses')
+      sessionStorage.removeItem('warehousesList')
 
       return this.clearInputs()
     }
