@@ -37,6 +37,13 @@ app.use((req, res, next) => {
     next();
 });
 
+if (process.env.NODE_ENV !== 'production') {
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Private-Network: true');
+        next();
+    });
+};
+
 // settings
 /*app.set('port', process.env.PROD_PORT || 3002);
 app.set('portdevelopment', process.env.DEV_PORT || 3001);
@@ -52,7 +59,7 @@ app.use('/static', express.static(path.join(__dirname, '/article_images_uploads'
 app.use('/api', apiRouter);
 
 // start sever
-if (fs.existsSync(crPath) && fs.existsSync(pkPath)) {
+if (fs.existsSync(crPath) && fs.existsSync(pkPath) && process.env.NODE_ENV === 'production') {
     https.createServer({
         cert: fs.readFileSync(crPath),
         key: fs.readFileSync(pkPath)

@@ -25,7 +25,6 @@
   "bugs": {
     "url": "https://github.com/GitTeamRocket/inventario/issues"
   },
-  "homepage": "https://github.com/GitTeamRocket/inventario",
   "browserslist": {
     "production": [
       ">0.2%",
