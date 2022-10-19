@@ -226,7 +226,7 @@ class CreateArticle extends Component {
         )
         return
       } else {
-        body.secondary_article_list = this.state.secondary_article_list
+        body.secondary_article_list = JSON.stringify(this.state.secondary_article_list)
       }
     }
 

@@ -24,7 +24,7 @@ exports.create = async (req, res, next) => {
                 });
             }
             else {
-                const array = req.body.secondary_article_list;
+                const array = JSON.parse(req.body.secondary_article_list);
                 if (array != null) {
                     let ican = 0;
                     for (var j = 0; j < array.length; j++) {
@@ -43,7 +43,8 @@ exports.create = async (req, res, next) => {
                             branch: req.body.branch,
                             warehouse_fk: req.body.warehouse_fk,
                             article_type_fk: req.body.article_type_fk,
-                            obs: req.body.obs
+                            obs: req.body.obs,
+                            image_url: req.file.filename
                         });
                         const ObjectParent = await db.article.findOne({ where: { id: registro.id } });
                         if (ObjectParent) {
@@ -90,6 +91,7 @@ exports.create = async (req, res, next) => {
             });
         }
     } catch (error) {
+        console.log("Error Article Controller - CREATE: ", error);
         res.status(500).send({
             error: '¡Error en el servidor!'
         });
