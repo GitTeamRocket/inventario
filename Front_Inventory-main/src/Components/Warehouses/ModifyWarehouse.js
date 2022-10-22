@@ -14,7 +14,6 @@ import {
   MODIFY_WAREHOUSE,
   NO_ITEMS_ERROR,
   MANDATORY_MESSAGE,
-  EMAIL_MESSAGE,
   ERROR_MESSAGE,
   ALERT_TIMEOUT,
   INVALID_STRING_MESSAGE,
@@ -43,14 +42,15 @@ class ModifyWarehouse extends Component {
       sessionStorage.removeItem('edit_warehouse_id')
 
       return getElementById(
-        WAREHOUSES_BY_ID + '?warehouses_id=' + session_id,
-        this.setUserInfo
+        WAREHOUSES_BY_ID + '?warehouse_id=' + session_id,
+        this.setWarehouseInfo
       )
     }
 
     return
   }
 
+  
   componentWillUnmount() {
     clearTimeout(this.state.timeout)
   }
@@ -67,16 +67,16 @@ class ModifyWarehouse extends Component {
         }
         break
 
-      case 'phone':
-        value = value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1')
+      case 'warehouse_name':
+        value = value.toUpperCase()
         break
 
-      case 'email':
+      case 'desc':
         value = value.toLowerCase()
         break
 
-      case 'user_name':
-        value = value.toUpperCase()
+      case 'address':
+        value = value.toLowerCase()
         break
     }
 
@@ -86,11 +86,9 @@ class ModifyWarehouse extends Component {
   clearInputs = () => {
     return this.setState({
       id: 0,
-      email: '',
-      user_name: '',
-      branch: '',
-      rol: '',
-      phone: '',
+      warehouse_name: '',
+      desc: '',
+      address: '',
     })
   }
 
@@ -112,17 +110,15 @@ class ModifyWarehouse extends Component {
   }
 
   // Functions related to requests
-  setUserInfo = (response, body) => {
+  setWarehouseInfo = (response, body) => {
     if (response == 'success') {
       this.setState({
-        user_name: body.user_name,
-        email: body.email,
-        branch: body.branch,
-        phone: body.phone,
-        rol: body.rol,
+        warehouse_name: body.warehouse_name,
+        desc: body.desc,
+        address: body.address,
       })
 
-      return this.buildAlert('success', 'Información de usuario recuperada.')
+      return this.buildAlert('success', 'Información de bodega recuperada.')
     }
 
     this.clearInputs()
@@ -130,7 +126,7 @@ class ModifyWarehouse extends Component {
     if (body == NO_ITEMS_ERROR) {
       return this.buildAlert(
         'attention',
-        'No se ha encontrado un usuario con ese ID. Por favor intente con otro.'
+        'No se ha encontrado una bodega con ese ID. Por favor intente con otro.'
       )
     }
 
@@ -139,8 +135,8 @@ class ModifyWarehouse extends Component {
 
   responseHandler = (response, body) => {
     if (response == 'success') {
-      sessionStorage.removeItem('users')
-      this.buildAlert('success', 'Usuario modificado con éxito.')
+      sessionStorage.removeItem('warehouses')
+      this.buildAlert('success', 'Bodega modificada con éxito.')
 
       return this.clearInputs()
     }
@@ -148,7 +144,7 @@ class ModifyWarehouse extends Component {
     return this.buildAlert('error', ERROR_MESSAGE)
   }
 
-  modifyUser = () => {
+  ModifyWarehouse = () => {
     this.close()
 
     // Verify that the required fields are filled
@@ -157,17 +153,11 @@ class ModifyWarehouse extends Component {
       return
     }
 
-    // Verify that the email format is valid
-    if (!validateEmail(this.state.email)) {
-      setTimeout(() => this.buildAlert('attention', EMAIL_MESSAGE), 10)
-      return
-    }
-
     // Verify strings
     if (
-      !validateString(this.state.email) ||
-      !validateString(this.state.user_name) ||
-      !validateString(this.state.phone)
+      !validateString(this.state.warehouse_name) ||
+      !validateString(this.state.desc) ||
+      !validateString(this.state.address)
     ) {
       setTimeout(() => this.buildAlert('attention', INVALID_STRING_MESSAGE), 10)
       return
@@ -175,14 +165,12 @@ class ModifyWarehouse extends Component {
 
     let body = {
       id: this.state.id,
-      email: this.state.email,
-      user_name: this.state.user_name,
-      branch: this.state.branch,
-      rol: this.state.rol,
-      phone: this.state.phone,
+      warehouse_name: this.state.warehouse_name,
+      desc: this.state.desc,
+      address: this.state.address,
     }
 
-    return simpleRequest(MODIFY_USER, 'PUT', body, this.responseHandler)
+    return simpleRequest(MODIFY_WAREHOUSE, 'PUT', body, this.responseHandler)
   }
 
   // Auxiliary functions
@@ -191,23 +179,15 @@ class ModifyWarehouse extends Component {
       return false
     }
 
-    if (!this.state.email) {
+    if (!this.state.warehouse_name) {
       return false
     }
 
-    if (!this.state.user_name) {
+    if (!this.state.desc) {
       return false
     }
 
-    if (!this.state.branch) {
-      return false
-    }
-
-    if (!this.state.rol) {
-      return false
-    }
-
-    if (!this.state.phone) {
+    if (!this.state.address) {
       return false
     }
 
@@ -220,14 +200,14 @@ class ModifyWarehouse extends Component {
         {this.state.alert}
         <span className='global-comp-title'>Modificar Bodega</span>
         <span className='global-comp-description'>
-          Diligencie el formulario para editar un usuario. Puede especificar el
-          ID o seleccionar la acción de editar en la opción de listar usuarios
+          Diligencie el formulario para editar una bodega. Puede especificar el
+          ID o seleccionar la acción de editar en la opción de listar bodegas
           del menú lateral.
         </span>
         <div className='global-comp-form-container'>
-          <span className='global-comp-sub-title'>ESPECIFIQUE EL USUARIO</span>
+          <span className='global-comp-sub-title'>ESPECIFIQUE LA BODEGA</span>
           <span className='global-body-text'>
-            Si fue redirigido a través de la opción listar usuarios, el
+            Si fue redirigido a través de la opción listar bodegas, el
             siguiente campo se diligencia de forma automática.
           </span>
           <div className='global-form-group'>
@@ -243,38 +223,52 @@ class ModifyWarehouse extends Component {
               onChange={this.handleChange}
             />
           </div>
-          <span className='global-comp-sub-title'>EDITE EL USUARIO</span>
+          <span className='global-comp-sub-title'>EDITE LA BODEGA</span>
           <div className='global-form-group'>
             <span className='global-form-label'>
-              Nombre completo
+              Nombre de referencia
               <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
-              id='user_name'
+              id='warehouse_name'
               type='text'
               className='global-form-input'
-              value={this.state.user_name}
+              value={this.state.warehouse_name}
               onChange={this.handleChange}
             />
           </div>
 
           <div className='global-form-group'>
             <span className='global-form-label'>
-              Correo electrónico
+              Direccion
               <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
-              id='email'
-              type='email'
+              id='address'
+              type='text'
               className='global-form-input'
-              value={this.state.email}
+              value={this.state.address}
               onChange={this.handleChange}
             />
           </div>
 
           <div className='global-form-group'>
             <span className='global-form-label'>
-              Teléfono
+              Descripcion corta
+              <strong className='global-form-mandatory'> *</strong>
+            </span>
+            <input
+              id='desc'
+              type='text'
+              className='global-form-input'
+              value={this.state.desc}
+              onChange={this.handleChange}
+            />
+          </div>
+
+          {/* <div className='global-form-group'>
+            <span className='global-form-label'>
+              Correo del responsable
               <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
@@ -284,55 +278,12 @@ class ModifyWarehouse extends Component {
               value={this.state.phone}
               onChange={this.handleChange}
             />
-          </div>
+          </div> */}
 
-          <div className='global-form-group'>
-            <span className='global-form-label'>
-              Rama
-              <strong className='global-form-mandatory'> *</strong>
-            </span>
-            <select
-              id='branch'
-              className='global-form-input-select'
-              value={this.state.branch}
-              onChange={this.handleChange}
-            >
-              <option
-                className='global-form-input-select-option'
-                value=''
-                disabled={true}
-              >
-                Seleccione una rama...
-              </option>
-              {setSelectOptions(BRANCHES)}
-            </select>
-          </div>
-
-          <div className='global-form-group'>
-            <span className='global-form-label'>
-              Rol
-              <strong className='global-form-mandatory'> *</strong>
-            </span>
-            <select
-              id='rol'
-              className='global-form-input-select'
-              value={this.state.rol}
-              onChange={this.handleChange}
-            >
-              <option
-                className='global-form-input-select-option'
-                value=''
-                disabled={true}
-              >
-                Seleccione un rol...
-              </option>
-              {setSelectOptions(ROL_TYPES)}
-            </select>
-          </div>
           <div className='global-form-buttons-container'>
             <button
               className='global-form-solid-button'
-              onClick={this.modifyUser}
+              onClick={this.ModifyWarehouse}
             >
               Enviar
             </button>

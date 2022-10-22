@@ -122,6 +122,12 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
     </div>
   )
 
+  const MODIFY_WAREHOUSE_LABEL = (
+    <div key='l18' id={18} className='m-menu-label' onClick={changeSelected}>
+      Modificar bodega
+    </div>
+  )
+
   // ARTICLE TYPES
   const CREATE_ARTICLE_TYPE_LABEL = (
     <div key='l5' id={5} className='m-menu-label' onClick={changeSelected}>
@@ -222,6 +228,7 @@ export function setOptionsByRol(rol, collapse, changeSelected) {
     >
       {CREATE_WAREHOUSE_LABEL}
       {LIST_WAREHOUSE_LABEL}
+      {MODIFY_WAREHOUSE_LABEL}
     </div>
   )
 
