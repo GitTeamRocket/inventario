@@ -135,7 +135,7 @@ class ModifyWarehouse extends Component {
 
   responseHandler = (response, body) => {
     if (response == 'success') {
-      sessionStorage.removeItem('warehouses')
+      sessionStorage.removeItem('warehouseslist')
       this.buildAlert('success', 'Bodega modificada con éxito.')
 
       return this.clearInputs()
@@ -180,10 +180,6 @@ class ModifyWarehouse extends Component {
     }
 
     if (!this.state.warehouse_name) {
-      return false
-    }
-
-    if (!this.state.desc) {
       return false
     }
 
@@ -255,7 +251,6 @@ class ModifyWarehouse extends Component {
           <div className='global-form-group'>
             <span className='global-form-label'>
               Descripcion corta
-              <strong className='global-form-mandatory'> *</strong>
             </span>
             <input
               id='desc'
