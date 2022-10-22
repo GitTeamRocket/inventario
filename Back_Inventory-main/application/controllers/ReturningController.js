@@ -152,7 +152,7 @@ exports.detail = async (req, res, next) => {
 
 exports.approve = async (req, res, next) => {
     try {
-        const registro = await db.returning.update({ auth_state: 'Aprobado' },
+        const registro = await db.returning.update({ auth_state: 'Aprobada' },
             {
                 where: {
                     id: req.body.returning_id,
