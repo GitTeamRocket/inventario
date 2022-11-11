@@ -122,10 +122,19 @@ class ListWarehouses extends Component {
 
       table_rows.push(
         <tr key={'tr' + obj.id}>
+          <td>{obj.id}</td>
           <td>{obj.warehouse_name}</td>
           <td>{obj.desc}</td>
           <td>{obj.address}</td>
           <td>
+            <span
+              id={'e-' + obj.id}
+              className='global-table-link'
+              onClick={this.routeEdit}
+              style={{ marginRight: '10px' }}
+            >
+              Editar
+            </span>
             <span
               id={'e-' + obj.id}
               className='global-table-link'
@@ -142,6 +151,7 @@ class ListWarehouses extends Component {
       <table>
         <tbody>
           <tr>
+            <th>ID</th>
             <th>Nombre de la bodega</th>
             <th>Descripción</th>
             <th>Dirección</th>
