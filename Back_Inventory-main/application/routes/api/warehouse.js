@@ -9,4 +9,6 @@ router.put('/update', WarehouseController.update);
 
 router.get('/detail', WarehouseController.detail);
 
+router.delete('/delete', WarehouseController.delete);
+
 module.exports = router;

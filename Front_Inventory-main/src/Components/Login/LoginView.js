@@ -9,6 +9,7 @@ import {
   ERROR_MESSAGE,
   EMAIL_MESSAGE,
   INVALID_LOGIN_ERROR,
+  INACTIVE_LOGIN_ERROR,
   ALERT_TIMEOUT,
 } from '../../Functions/Constants'
 
@@ -72,6 +73,13 @@ class LoginView extends Component {
       return this.buildAlert(
         'attention',
         'El correo electrónico o la contraseña es incorrecta. Por favor intente de nuevo.'
+      )
+    }
+
+    if (body == INACTIVE_LOGIN_ERROR) {
+      return this.buildAlert(
+        'attention',
+        'El usuario se encuentra inactivo. Por favor contacte con un administrador.'
       )
     }
 
@@ -208,8 +216,8 @@ class LoginView extends Component {
               </button>
             </div>
             <span className='lg-link'
-            onClick={this.recover}
-            style={{ cursor: 'pointer' }}>
+              onClick={this.recover}
+              style={{ cursor: 'pointer' }}>
               ¿Olvidaste tu contraseña?
             </span>
             {/* LEGEND */}
@@ -219,7 +227,8 @@ class LoginView extends Component {
               <hr></hr>
             </div>
             <div className='lg-logo-container'>
-              <img className='lg-logo' src='./logo_Rocket.png' alt='logo' />
+              <img className='lg-logo' src='./logo_Rocket.png' alt='logo' style={{ marginRight: '10px' }}/>
+              <img className='lg-logo-vallesoft' src='./logo_valle_gray.png' alt='logo' />
             </div>
           </div>
         </div>

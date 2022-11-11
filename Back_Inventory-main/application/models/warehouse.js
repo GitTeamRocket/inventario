@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
     warehouse_name: DataTypes.STRING,
     desc: DataTypes.STRING,
     address: DataTypes.STRING,
-    user_fk: DataTypes.INTEGER
+    user_fk: DataTypes.INTEGER,
+    state: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'warehouse',

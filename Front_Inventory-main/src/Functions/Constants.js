@@ -55,10 +55,12 @@ export const LIST_USERS = 'user/list'
 export const USERS_BY_ID = 'user/detail'
 export const CREATE_USER = 'user/create'
 export const MODIFY_USER = 'user/update'
+export const DELETE_USER = 'user/delete'
 
 export const CREATE_WAREHOUSE = 'warehouse/create'
 export const LIST_WAREHOUSES = 'warehouse/list'
 export const MODIFY_WAREHOUSE = 'warehouse/update'
+export const DELETE_WAREHOUSE = 'warehouse/delete'
 export const WAREHOUSES_BY_ID = 'warehouse/detail'
 
 export const CREATE_ARTICLE_TYPE = 'article_type/create'
@@ -67,6 +69,7 @@ export const ARTICLE_TYPE_LIST = 'article_type/list'
 export const LIST_ARTICLES = 'article/list'
 export const CREATE_ARTICLE = 'article/create'
 export const MODIFY_ARTICLE = 'article/update'
+export const DELETE_ARTICLE = 'article/delete'
 export const GET_FILE_ARTICLE = 'article/makefile'
 
 export const CREATE_BORROWING = 'borrowing/create'
@@ -106,6 +109,7 @@ export const ALERT_TIMEOUT = 6000
 export const NO_ITEMS_ERROR = 'No hay registros en el sistema.'
 export const INVALID_CLASSIF_ERROR = 'La clasificación es inválida.'
 export const INVALID_LOGIN_ERROR = 'Error en el usuario o contraseña.'
+export const INACTIVE_LOGIN_ERROR = 'Error el usuario se encuentra inactivo.'
 export const USED_EMAIL_ERROR = 'El correo electrónico ya se encuentra en uso.'
 export const ARTICLE_TYPE_EXIST_ERROR = 'El tipo de artículo deseado ya existe.'
 export const NO_EMAIL_ERROR =

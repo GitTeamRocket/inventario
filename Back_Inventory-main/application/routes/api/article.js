@@ -8,6 +8,7 @@ router.put('/update', auth.verifyWarehouseManager,ArticleController.update);
 
 router.get('/list', auth.verifyBranchChief,ArticleController.list);
 router.get('/makefile', auth.verifyWarehouseManager, ArticleController.makefile);
+router.delete('/delete', auth.verifyWarehouseManager, ArticleController.delete);
 
 
 module.exports = router;

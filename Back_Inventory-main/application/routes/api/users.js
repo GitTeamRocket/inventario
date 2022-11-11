@@ -6,6 +6,7 @@ router.post('/create', UserController.add);
 router.post('/login', UserController.login);
 
 router.put('/update', UserController.update);
+router.delete('/delete', UserController.delete);
 
 router.get('/list',  UserController.list);
 router.get('/detail', UserController.detail);

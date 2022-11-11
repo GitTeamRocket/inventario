@@ -3,6 +3,7 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { getElements } from '../../Functions/Get'
+import { simpleRequest } from '../../Functions/Post'
 import { setSelectOptions } from '../../Functions/Helpers'
 import {
   LIST_USERS,
@@ -12,6 +13,7 @@ import {
   ERROR_MESSAGE,
   BRANCHES,
   ROL_TYPES,
+  DELETE_USER
 } from '../../Functions/Constants'
 
 class ListUsers extends Component {
@@ -52,6 +54,34 @@ class ListUsers extends Component {
     sessionStorage.setItem('edit_user_id', id[1])
 
     return this.props.changeSelected(3)
+  }
+
+  routeRemove = (event) => {
+    let id = event.target.id.split('-')
+
+    let body = {
+      user_id: id[1]
+    }
+
+    return simpleRequest(DELETE_USER, 'DELETE', body, this.responseHandler)
+  }
+
+  responseHandler = (response, body) => {
+    if (response == 'success') {
+      getElements('users', LIST_USERS, this.setUsers)
+      return this.buildAlert(
+        'success',
+        'La solicitud ha sido procesada exitosamente.'
+      );
+    }
+
+    if (body == 'El usuario tiene asociadas bodegas activas.' ||
+      body == 'El usuario tiene prestamos pendientes o sin devolver.' ||
+      body == 'No hay registros en el sistema.') {
+      return this.buildAlert('error', body);
+    }
+
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   // Functions to handle requests
@@ -168,9 +198,19 @@ class ListUsers extends Component {
               id={'e-' + obj.id}
               className='global-table-link'
               onClick={this.routeEdit}
+              style={{ marginRight: '10px' }}
             >
               Editar
             </span>
+            {window.sessionStorage.getItem("user_id") != obj.id &&
+              <span
+                id={'e-' + obj.id}
+                className='global-table-link'
+                onClick={this.routeRemove}
+              >
+                Eliminar
+              </span>
+            }
           </td>
         </tr>
       )

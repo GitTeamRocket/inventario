@@ -110,7 +110,8 @@ exports.list = async (req, res, next) => {
                 where: {
                     article_type_fk: article_type,
                     branch: branch,
-                    warehouse_fk: warehouse_id
+                    warehouse_fk: warehouse_id,
+                    state: 1
                 },
                 include: [{
                     model: db.article_type,
@@ -137,10 +138,11 @@ exports.list = async (req, res, next) => {
             }
         }
         else {
-            if(article_type){
+            if (article_type) {
                 const registro = await db.article.findAndCountAll({
                     where: {
                         article_type_fk: article_type,
+                        state: 1
                     },
                     include: [{
                         model: db.article_type,
@@ -157,7 +159,7 @@ exports.list = async (req, res, next) => {
                         as: 'Asociado'
                     }],
                 });
-    
+
                 if (registro.count != 0) {
                     res.status(200).json(registro);
                 } else {
@@ -166,11 +168,12 @@ exports.list = async (req, res, next) => {
                     });
                 }
             }
-            else{
-                if(branch){
+            else {
+                if (branch) {
                     const registro = await db.article.findAndCountAll({
                         where: {
                             branch: branch,
+                            state: 1
                         },
                         include: [{
                             model: db.article_type,
@@ -187,7 +190,7 @@ exports.list = async (req, res, next) => {
                             as: 'Asociado'
                         }],
                     });
-        
+
                     if (registro.count != 0) {
                         res.status(200).json(registro);
                     } else {
@@ -196,11 +199,12 @@ exports.list = async (req, res, next) => {
                         });
                     }
                 }
-                else{
-                    if(warehouse_id){
+                else {
+                    if (warehouse_id) {
                         const registro = await db.article.findAndCountAll({
                             where: {
-                                warehouse_fk: warehouse_id
+                                warehouse_fk: warehouse_id,
+                                state: 1
                             },
                             include: [{
                                 model: db.article_type,
@@ -217,7 +221,7 @@ exports.list = async (req, res, next) => {
                                 as: 'Asociado'
                             }],
                         });
-            
+
                         if (registro.count != 0) {
                             res.status(200).json(registro);
                         } else {
@@ -226,8 +230,11 @@ exports.list = async (req, res, next) => {
                             });
                         }
                     }
-                    else{
+                    else {
                         const registro = await db.article.findAndCountAll({
+                            where: {
+                                state: 1
+                            },
                             include: [{
                                 model: db.article_type,
                                 required: true,
@@ -252,9 +259,10 @@ exports.list = async (req, res, next) => {
                         }
                     }
                 }
-            }  
+            }
         }
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: '¡Error en el servidor!'
         })
@@ -365,3 +373,54 @@ exports.makefile = async (req,res,next) =>{
         next(error); 
     }
 }
+
+exports.delete = async (req, res, next) => {
+    const { article_id } = req.body;
+
+    try {
+        const article = await db.article.findAndCountAll({
+            where: {
+                id: article_id
+            }
+        });
+
+        if (article.count != 0) {
+            const [results, metadata] = await db.sequelize.query(
+                `SELECT * FROM articles a 
+                JOIN reservations r ON a.id = r.article_fk 
+                JOIN borrowings b ON b.id = r.borrowing_fk 
+                LEFT JOIN returnings rt ON rt.borrowing_fk = b.id
+                WHERE rt.auth_state = "Pendiente" OR b.auth_state = "Pendiente"`
+            );
+
+            if (results.length == 0) {
+                const update = await db.article.update({
+                    state: 0
+                },
+                    {
+                        where: {
+                            id: article_id
+                        }
+                    });
+
+                res.status(200).send({
+                    message: 'Articulo eliminado con éxito.'
+                });
+            } else {
+                res.status(403).send({
+                    error: 'El articulo tiene prestamos o devoluciones pendientes.'
+                });
+            }
+        } else {
+            res.status(404).send({
+                error: 'No hay registros en el sistema.'
+            });
+        }
+
+    } catch (error) {
+        res.status(500).send({
+            error: '¡Error en el servidor!'
+        })
+        next(error);
+    }
+};

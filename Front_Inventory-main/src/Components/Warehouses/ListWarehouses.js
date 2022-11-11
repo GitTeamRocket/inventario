@@ -3,12 +3,14 @@ import './Styles.css'
 
 import Alert from '../Alerts/Alert'
 import { getElements } from '../../Functions/Get'
+import { simpleRequest } from '../../Functions/Post'
 import {
   LIST_WAREHOUSES,
   ALERT_TIMEOUT,
   NO_ITEMS_ERROR,
   NO_ITEM_MESSAGE,
   ERROR_MESSAGE,
+  DELETE_WAREHOUSE
 } from '../../Functions/Constants'
 
 class ListWarehouses extends Component {
@@ -45,6 +47,32 @@ class ListWarehouses extends Component {
     sessionStorage.setItem('edit_warehouse_id', id[1])
 
     return this.props.changeSelected(18)
+  }
+
+  routeRemove = (event) => {
+    let id = event.target.id.split('-')
+
+    let body = {
+      warehouse_id: id[1]
+    }
+
+    return simpleRequest(DELETE_WAREHOUSE, 'DELETE', body, this.responseHandler)
+  }
+
+  responseHandler = (response, body) => {
+    if (response == 'success') {
+      getElements('warehousesList', LIST_WAREHOUSES, this.setWarehousesList)
+      return this.buildAlert(
+        'success',
+        'La solicitud ha sido procesada exitosamente.'
+      );
+    }
+
+    if (body == 'La bodega tiene articulos activos asociadas.' || body == 'No hay registros en el sistema.') {
+      return this.buildAlert('error', body);
+    }
+
+    return this.buildAlert('error', ERROR_MESSAGE);
   }
 
   // Functions to handle requests
@@ -98,6 +126,13 @@ class ListWarehouses extends Component {
           <td>{obj.desc}</td>
           <td>{obj.address}</td>
           <td>
+            <span
+              id={'e-' + obj.id}
+              className='global-table-link'
+              onClick={this.routeRemove}
+            >
+              Eliminar
+            </span>
           </td>
         </tr>
       )
@@ -110,6 +145,7 @@ class ListWarehouses extends Component {
             <th>Nombre de la bodega</th>
             <th>Descripción</th>
             <th>Dirección</th>
+            <th>Acciones</th>
           </tr>
           {table_rows}
         </tbody>

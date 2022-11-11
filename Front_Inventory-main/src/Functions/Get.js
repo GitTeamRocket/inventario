@@ -50,10 +50,10 @@ function validateResponse(response) {
 
 // CUSTOM GET REQUEST
 export function getWarehouses(responseHandler) {
-  let data_stored = getFromStorage('warehouses', responseHandler)
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
+  // let data_stored = getFromStorage('warehouses', responseHandler)
+  // if (data_stored != null) {
+  //   return responseHandler('success', data_stored)
+  // }
 
   // Make the request if there is nothing stored
   let url = HOST + LIST_WAREHOUSES
@@ -227,10 +227,10 @@ export function getAllArticleTypes(responseHandler) {
 }
 
 export function getFilteredBorrowings(responseHandler) {
-  let data_stored = getFromStorage('filtered_borrowings', responseHandler)
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
+  // let data_stored = getFromStorage('filtered_borrowings', responseHandler)
+  // if (data_stored != null) {
+  //   return responseHandler('success', data_stored)
+  // }
 
   // Make the request if there is nothing stored
   let url = HOST + LIST_BORROWINGS + '?has_returning=false'
@@ -305,10 +305,10 @@ export function getElementById(path, responseHandler) {
 }
 
 export function getElements(key, path, responseHandler) {
-  let data_stored = getFromStorage(key, responseHandler)
-  if (data_stored != null) {
-    return responseHandler('success', data_stored)
-  }
+  // let data_stored = getFromStorage(key, responseHandler)
+  // if (data_stored != null) {
+  //   return responseHandler('success', data_stored)
+  // }
 
   // Make the request if there is nothing stored
   let url = HOST + path

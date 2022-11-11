@@ -10,6 +10,7 @@ import {
   getWarehouses,
   getAllArticleTypes,
 } from '../../Functions/Get'
+import { simpleRequest } from '../../Functions/Post'
 import { setSelectOptions } from '../../Functions/Helpers'
 import {
   GET_FILE_ARTICLE,
@@ -18,6 +19,7 @@ import {
   NO_ITEM_MESSAGE,
   NO_ITEMS_ERROR,
   ERROR_MESSAGE,
+  DELETE_ARTICLE
 } from '../../Functions/Constants'
 
 class ListArticle extends Component {
@@ -106,6 +108,33 @@ class ListArticle extends Component {
     sessionStorage.setItem('edit_article', json)
 
     return this.props.changeSelected(8)
+  }
+
+  routeRemove = (event) => {
+    let id = event.target.id.split('-')
+
+    let body = {
+      article_id: id[1]
+    }
+
+    return simpleRequest(DELETE_ARTICLE, 'DELETE', body, this.updateResponseHandler)
+  }
+
+  updateResponseHandler = (response, body) => {
+    console.log(response, body);
+    if (response == 'success') {
+      getArticles('', '', this.state.value, this.setArticles)
+      return this.buildAlert(
+        'success',
+        'La solicitud ha sido procesada exitosamente.'
+      );
+    }
+
+    if (body == 'El articulo tiene prestamos o devoluciones pendientes.' || body == 'No hay registros en el sistema.') {
+      return this.buildAlert('error', body);
+    }
+
+    return this.buildAlert('error', ERROR_MESSAGE)
   }
 
   // Functions related to requests
@@ -287,8 +316,16 @@ class ListArticle extends Component {
                 id={'e-' + obj.id}
                 className='global-table-link'
                 onClick={this.routeEdit}
+                style={{ marginRight: '10px' }}
               >
                 Editar
+              </span>
+              <span
+                id={'e-' + obj.id}
+                className='global-table-link'
+                onClick={this.routeRemove}
+              >
+                Eliminar
               </span>
             </td>
           ) : (

@@ -52,26 +52,33 @@ exports.login = async (req, res, next) => {
     try {
         const Usuario = await db.user.findOne({ where: { email: req.body.email } });
         if (Usuario) {
-            const passwordIsValid = bcrypt.compareSync(req.body.password, Usuario.password);
-            if (passwordIsValid) {
-                const token = await tokenServices.encode(Usuario);
-                res.status(200).send({
-                    message: 'Bienvenido',
-                    token: token,
-                    user:
-                    {
-                        id: Usuario.id,
-                        name: Usuario.user_name,
-                        email: Usuario.email,
-                        rol: Usuario.rol
-                    }
-                })
+            if (Usuario.state == 1) {
+                const passwordIsValid = bcrypt.compareSync(req.body.password, Usuario.password);
+                if (passwordIsValid) {
+                    const token = await tokenServices.encode(Usuario);
+                    res.status(200).send({
+                        message: 'Bienvenido',
+                        token: token,
+                        user:
+                        {
+                            id: Usuario.id,
+                            name: Usuario.user_name,
+                            email: Usuario.email,
+                            rol: Usuario.rol
+                        }
+                    })
+                } else {
+                    //error en la autenticación
+                    res.status(401).json({
+                        error: 'Error en el usuario o contraseña.'
+                    })
+                }
             } else {
-                //error en la autenticación
                 res.status(401).json({
-                    error: 'Error en el usuario o contraseña.'
+                    error: 'Error el usuario se encuentra inactivo.'
                 })
             }
+
         } else {
             //error en la autenticación
             res.status(404).json({
@@ -79,6 +86,7 @@ exports.login = async (req, res, next) => {
             })
         }
     } catch (error) {
+        console.log(error);
         res.status(500).send({
             error: '¡Error en el servidor!'
         })
@@ -89,7 +97,11 @@ exports.login = async (req, res, next) => {
 exports.list = async (req, res, next) => {
 
     try {
-        const userss = await db.user.findAndCountAll()
+        const userss = await db.user.findAndCountAll({
+            where: {
+                state: 1
+            }
+        })
         if (userss.count != 0) {
             res.status(200).json(userss);
         } else {
@@ -272,3 +284,67 @@ function resetToken(user_email) {
         next(error);
     }
 }
+
+exports.delete = async (req, res, next) => {
+    const { user_id } = req.body;
+    try {
+        const user = await db.user.findAndCountAll({
+            where: { id: user_id },
+        });
+        if (user.count != 0) {
+            const borrowingPending = await db.borrowing.findAndCountAll({
+                where: db.Sequelize.and(
+                    { user_fk: user_id },
+                    db.Sequelize.or(
+                        { auth_state: "Pendiente" },
+                        { has_returning: 0 }
+                    )
+                )
+            });
+
+            if (borrowingPending.count == 0) {
+                const warehousesActives = await db.warehouse.findAndCountAll({
+                    where: {
+                        user_fk: user_id,
+                        state: 1
+                    }
+                });
+
+                if (warehousesActives.count == 0) {
+                    const update = await db.user.update({
+                        state: 0
+                    },
+                        {
+                            where: {
+                                id: user_id
+                            },
+                        });
+
+                    res.status(200).send({
+                        message: 'Usuario eliminado con éxito.'
+                    });
+                } else {
+                    res.status(404).send({
+                        error: 'El usuario tiene asociadas bodegas activas.'
+                    });
+                }
+
+            } else {
+                res.status(404).send({
+                    error: 'El usuario tiene prestamos pendientes o sin devolver.'
+                });
+            }
+
+        } else {
+            res.status(404).send({
+                error: 'No hay registros en el sistema.'
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            error: '¡Error en el servidor!'
+        });
+        next(error);
+    }
+};
