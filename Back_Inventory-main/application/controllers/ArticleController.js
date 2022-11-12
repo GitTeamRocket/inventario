@@ -390,7 +390,7 @@ exports.delete = async (req, res, next) => {
                 JOIN reservations r ON a.id = r.article_fk 
                 JOIN borrowings b ON b.id = r.borrowing_fk 
                 LEFT JOIN returnings rt ON rt.borrowing_fk = b.id
-                WHERE rt.auth_state = "Pendiente" OR b.auth_state = "Pendiente"`
+                WHERE rt.auth_state = "Pendiente" OR b.auth_state = "Pendiente" OR a.available_state = "Prestado"`
             );
 
             if (results.length == 0) {
