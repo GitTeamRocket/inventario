@@ -4,8 +4,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const fs = require('fs');
 const https = require('https');
-const crPath = '/etc/letsencrypt/live/inventario.scoutscentinelas113cali.org/cert.pem';
-const pkPath = '/etc/letsencrypt/live/inventario.scoutscentinelas113cali.org/privkey.pem';
+const crPath = '/etc/nginx/ssl/inventario_scoutscentinelas113cali.org/inventario_scoutscentinelas113cali.crt';
+const pkPath = '/etc/nginx/ssl/inventario_scoutscentinelas113cali.org/inventario_scoutscentinelas113cali.key';
 const multer = require('multer');
 const path = require('path');
 
