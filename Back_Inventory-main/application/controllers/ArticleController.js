@@ -393,9 +393,9 @@ exports.delete = async (req, res, next) => {
                 id: article_id
             }
         });
-        
+
         console.log(article.rows[0].image_url);
-        
+
         if (article.count != 0) {
             const [results, metadata] = await db.sequelize.query(
                 `SELECT DISTINCT a.* FROM articles a 
@@ -406,22 +406,25 @@ exports.delete = async (req, res, next) => {
                 OR UPPER(b.auth_state) = "PENDIENTE" 
                 OR UPPER(a.available_state) = "PRESTADO")
                 AND a.id = ${article_id}`
-                );
-                
+            );
+
             if (results.length == 0) {
-                // const update = await db.article.update({
-                //     state: 0
-                // },
-                //     {
-                //         where: {
-                //             id: article_id
-                //         }
-                //     });
+                const update = await db.article.update({
+                    state: 0
+                },
+                    {
+                        where: {
+                            id: article_id
+                        }
+                    });
+
+                if (fs.existsSync(path.join(process.cwd(), "article_images_uploads", article.rows[0].image_url))) {
+                    fs.unlinkSync(path.join(process.cwd(), "article_images_uploads", article.rows[0].image_url));
+                }
 
                 res.status(200).send({
                     message: 'Articulo eliminado con éxito.'
                 });
-                fs.unlinkSync(path.join(process.cwd(), "article_images_uploads", article.rows[0].image_url));
             } else {
                 res.status(403).send({
                     error: 'El articulo tiene prestamos o devoluciones pendientes.'
