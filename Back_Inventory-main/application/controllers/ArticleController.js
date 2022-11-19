@@ -1,8 +1,10 @@
 const db = require('../models');
 const { exportsArticlesToExcel } = require('../services/makefile');
 const fs = require('fs');
+const path = require('path');
 
 exports.create = async (req, res, next) => {
+    let deleteFile = false;
     try {
         const parent = await db.article_type.findOne({ where: { id: req.body.article_type_fk } });
         if (parent != null) {
@@ -73,12 +75,14 @@ exports.create = async (req, res, next) => {
                     }
 
                     else {
+                        deleteFile = true;
                         res.status(404).send({
                             error: 'No es posible realizar la creación y asociación del artículo.'
                         });
                     }
                 }
                 else {
+                    deleteFile = true;
                     res.status(404).send({
                         error: 'No es posible realizar la asociación del artículo.'
                     });
@@ -86,16 +90,22 @@ exports.create = async (req, res, next) => {
             }
         }
         else {
+            deleteFile = true;
             res.status(404).send({
                 error: 'No se encontro el tipo de artículo.'
             });
         }
     } catch (error) {
+        deleteFile = true;
         console.log("Error Article Controller - CREATE: ", error);
         res.status(500).send({
             error: '¡Error en el servidor!'
         });
         next(error);
+    } finally {
+        if (deleteFile) {
+            fs.unlinkSync(path.join(process.cwd(), "article_images_uploads", req.file.filename));
+        }
     }
 };
 
@@ -383,7 +393,9 @@ exports.delete = async (req, res, next) => {
                 id: article_id
             }
         });
-
+        
+        console.log(article.rows[0].image_url);
+        
         if (article.count != 0) {
             const [results, metadata] = await db.sequelize.query(
                 `SELECT DISTINCT a.* FROM articles a 
@@ -394,21 +406,22 @@ exports.delete = async (req, res, next) => {
                 OR UPPER(b.auth_state) = "PENDIENTE" 
                 OR UPPER(a.available_state) = "PRESTADO")
                 AND a.id = ${article_id}`
-            );
-
+                );
+                
             if (results.length == 0) {
-                const update = await db.article.update({
-                    state: 0
-                },
-                    {
-                        where: {
-                            id: article_id
-                        }
-                    });
+                // const update = await db.article.update({
+                //     state: 0
+                // },
+                //     {
+                //         where: {
+                //             id: article_id
+                //         }
+                //     });
 
                 res.status(200).send({
                     message: 'Articulo eliminado con éxito.'
                 });
+                fs.unlinkSync(path.join(process.cwd(), "article_images_uploads", article.rows[0].image_url));
             } else {
                 res.status(403).send({
                     error: 'El articulo tiene prestamos o devoluciones pendientes.'

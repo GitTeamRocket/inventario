@@ -8,25 +8,27 @@ const crPath = '/etc/nginx/ssl/inventario_scoutscentinelas113cali.org/inventario
 const pkPath = '/etc/nginx/ssl/inventario_scoutscentinelas113cali.org/inventario_scoutscentinelas113cali.key';
 const multer = require('multer');
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
 
 //Vars
 let PORT;
-process.env.NODE_ENV === 'production' 
+process.env.NODE_ENV === 'production'
     ? (PORT = process.env.PROD_PORT) :
-        process.env.NODE_ENV === 'test' 
-            ? (PORT = process.env.QA_PORT ) :
-                (PORT = process.env.DEV_PORT); 
+    process.env.NODE_ENV === 'test'
+        ? (PORT = process.env.QA_PORT) :
+        (PORT = process.env.DEV_PORT);
 
 //instancia de express en app
 const app = express();
 const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, path.join(__dirname, '/article_images_uploads'));
+    destination: function (req, file, cb) {
+        const imagePath = path.join(__dirname, '/article_images_uploads');
+        fs.mkdirSync(imagePath, { recursive: true });
+        cb(null, imagePath);
     },
-    filename: function(req, file, cb){
+    filename: function (req, file, cb) {
         const originalname = file.originalname.split(".");
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, `${originalname[0]}-${uniqueSuffix}.${originalname[1]}`);
+        cb(null, `${uuidv4()}.${originalname[1]}`);
     }
 });
 
@@ -51,7 +53,7 @@ app.set('portdevelopment', process.env.DEV_PORT || 3001);
 */
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({storage}).single('files'));
+app.use(multer({ storage }).single('files'));
 
 //Archivos estaticos
 app.use('/static', express.static(path.join(__dirname, '/article_images_uploads')));
@@ -64,13 +66,13 @@ if (fs.existsSync(crPath) && fs.existsSync(pkPath) && process.env.NODE_ENV === '
     https.createServer({
         cert: fs.readFileSync(crPath),
         key: fs.readFileSync(pkPath)
-    },app).listen(PORT, (error) => {
-            if (!error) {
-                console.log(`Running in ${process.env.NODE_ENV}`);
-                console.log(`Server on port http://localhost:${PORT} with SSH`);
-            } else {
-                console.log(error);
-            }
+    }, app).listen(PORT, (error) => {
+        if (!error) {
+            console.log(`Running in ${process.env.NODE_ENV}`);
+            console.log(`Server on port http://localhost:${PORT} with SSH`);
+        } else {
+            console.log(error);
+        }
     });
 }
 else {

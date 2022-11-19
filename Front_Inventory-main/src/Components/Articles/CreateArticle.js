@@ -186,7 +186,7 @@ class CreateArticle extends Component {
       )
     }
 
-    return this.buildAlert('error', ERROR_MESSAGE)
+    return this.buildAlert('error', body)
   }
 
   createArticle = () => {
