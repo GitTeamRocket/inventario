@@ -4,13 +4,15 @@ import './Styles.css'
 import Alert from '../Alerts/Alert'
 import { getElements } from '../../Functions/Get'
 import { simpleRequest } from '../../Functions/Post'
+import { simpleAlert } from '../../Functions/SwalAlert'
 import {
   LIST_WAREHOUSES,
   ALERT_TIMEOUT,
   NO_ITEMS_ERROR,
   NO_ITEM_MESSAGE,
   ERROR_MESSAGE,
-  DELETE_WAREHOUSE
+  DELETE_WAREHOUSE,
+  CONFIRM_DELETE_WAREHOUSES
 } from '../../Functions/Constants'
 
 class ListWarehouses extends Component {
@@ -56,7 +58,7 @@ class ListWarehouses extends Component {
       warehouse_id: id[1]
     }
 
-    return simpleRequest(DELETE_WAREHOUSE, 'DELETE', body, this.responseHandler)
+    return simpleAlert(CONFIRM_DELETE_WAREHOUSES, () => simpleRequest(DELETE_WAREHOUSE, 'DELETE', body, this.responseHandler));
   }
 
   responseHandler = (response, body) => {

@@ -11,6 +11,7 @@ import {
   getAllArticleTypes,
 } from '../../Functions/Get'
 import { simpleRequest } from '../../Functions/Post'
+import { simpleAlert } from '../../Functions/SwalAlert'
 import { setSelectOptions } from '../../Functions/Helpers'
 import {
   GET_FILE_ARTICLE,
@@ -19,7 +20,8 @@ import {
   NO_ITEM_MESSAGE,
   NO_ITEMS_ERROR,
   ERROR_MESSAGE,
-  DELETE_ARTICLE
+  DELETE_ARTICLE,
+  CONFIRM_DELETE_ARTICLE
 } from '../../Functions/Constants'
 
 class ListArticle extends Component {
@@ -117,7 +119,7 @@ class ListArticle extends Component {
       article_id: id[1]
     }
 
-    return simpleRequest(DELETE_ARTICLE, 'DELETE', body, this.updateResponseHandler)
+    return simpleAlert(CONFIRM_DELETE_ARTICLE, () => simpleRequest(DELETE_ARTICLE, 'DELETE', body, this.updateResponseHandler));
   }
 
   updateResponseHandler = (response, body) => {
@@ -294,11 +296,11 @@ class ListArticle extends Component {
           <td>{obj.branch}</td>
           <td style={{ textTransform: 'capitalize' }}>{obj.available_state}</td>
           <td>{obj.physical_state}</td>
-          {obj.obs ? (
+          {obj.obs || obj.image_url ? (
             <td>
               <span
                 className='global-table-link'
-                onClick={() => this.showModal(obj.name, obj.label, obj.obs, obj.image_url)}
+                onClick={() => this.showModal(obj.name, obj.label, obj.obs ? obj.obs : "Sin observaciones", obj.image_url)}
               >
                 Ver más
               </span>

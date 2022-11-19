@@ -49,7 +49,12 @@ export const HOST =
     REACT_APP_NODE_ENV === 'qa' ? 
       process.env.REACT_APP_HOST_QA :
         process.env.REACT_APP_HOST_DEV
-export const IMAGE_HOST = 'http://localhost:3001/static/'
+export const IMAGE_HOST = 
+  REACT_APP_NODE_ENV === 'production' ? 
+    process.env.REACT_APP_IMAGE_HOST_PROD :
+    REACT_APP_NODE_ENV === 'qa' ? 
+      process.env.REACT_APP_IMAGE_HOST_QA :
+        process.env.REACT_APP_IMAGE_HOST_DEV
 export const LOGIN = 'user/login'
 export const LIST_USERS = 'user/list'
 export const USERS_BY_ID = 'user/detail'
@@ -104,6 +109,10 @@ export const NO_ITEM_MESSAGE =
 export const INVALID_STRING_MESSAGE =
   'Alguno de los campos ingresados supera la extensión permitida o se detectó un patrón inválido. Por favor revise los campos.'
 export const ALERT_TIMEOUT = 6000
+
+export const CONFIRM_DELETE_ARTICLE = "Se eliminara permanentemente el articulo"
+export const CONFIRM_DELETE_USER = "Se eliminara permanentemente el usuario"
+export const CONFIRM_DELETE_WAREHOUSES = "Se eliminara permanentemente la bodega"
 
 // ERRORS
 export const NO_ITEMS_ERROR = 'No hay registros en el sistema.'

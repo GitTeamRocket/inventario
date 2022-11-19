@@ -4,6 +4,7 @@ import './Styles.css'
 import Alert from '../Alerts/Alert'
 import { getElements } from '../../Functions/Get'
 import { simpleRequest } from '../../Functions/Post'
+import { simpleAlert } from '../../Functions/SwalAlert'
 import { setSelectOptions } from '../../Functions/Helpers'
 import {
   LIST_USERS,
@@ -13,7 +14,8 @@ import {
   ERROR_MESSAGE,
   BRANCHES,
   ROL_TYPES,
-  DELETE_USER
+  DELETE_USER,
+  CONFIRM_DELETE_USER
 } from '../../Functions/Constants'
 
 class ListUsers extends Component {
@@ -63,7 +65,7 @@ class ListUsers extends Component {
       user_id: id[1]
     }
 
-    return simpleRequest(DELETE_USER, 'DELETE', body, this.responseHandler)
+    return simpleAlert(CONFIRM_DELETE_USER, () => simpleRequest(DELETE_USER, 'DELETE', body, this.responseHandler));
   }
 
   responseHandler = (response, body) => {

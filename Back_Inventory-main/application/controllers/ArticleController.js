@@ -8,7 +8,7 @@ exports.create = async (req, res, next) => {
         if (parent != null) {
             if (parent.is_parent === 0) {
                 var count = await db.article.count({}) + 1;
-                var article_label = parent.classif.substring(0, 3) +'-'+ parent.article_type_name.substring(0, 3) + '-' + req.body.branch.substring(0, 3) + '-' + count;
+                var article_label = parent.classif.substring(0, 3) + '-' + parent.article_type_name.substring(0, 3) + '-' + req.body.branch.substring(0, 3) + '-' + count;
                 const registro = await db.article.create({
                     label: article_label.toUpperCase(),
                     available_state: req.body.available_state,
@@ -35,7 +35,7 @@ exports.create = async (req, res, next) => {
                     }
                     if (ican === array.length) {
                         var count = await db.article.count({}) + 1;
-                        var article_label = parent.classif.substring(0, 3) +'-'+ parent.article_type_name.substring(0, 3) + '-' + req.body.branch.substring(0, 3) + '-' + count;
+                        var article_label = parent.classif.substring(0, 3) + '-' + parent.article_type_name.substring(0, 3) + '-' + req.body.branch.substring(0, 3) + '-' + count;
                         const registro = await db.article.create({
                             label: article_label,
                             available_state: req.body.available_state,
@@ -52,7 +52,7 @@ exports.create = async (req, res, next) => {
                                 const type = await db.article_type.findOne({ where: { id: array[i].article_type_fk } });
                                 if (type.is_parent === 0) {
                                     var count = await db.article.count({}) + 1;
-                                    var articlelabel = type.classif.substring(0, 3) +'-'+ type.article_type_name.substring(0, 3) + '-' + array[i].branch.substring(0, 3) + '-' + count;
+                                    var articlelabel = type.classif.substring(0, 3) + '-' + type.article_type_name.substring(0, 3) + '-' + array[i].branch.substring(0, 3) + '-' + count;
                                     const registro = await db.article.create({
                                         label: articlelabel,
                                         available_state: array[i].available_state,
@@ -281,51 +281,51 @@ exports.update = async (req, res, next) => {
                 branch: req.body.branch,
                 warehouse_fk: req.body.warehouse_fk,
                 obs: req.body.obs
-            },{
-                where:{ id: article.id }
+            }, {
+                where: { id: article.id }
             });
-            const article_updated = await db.article.findOne({where: {id: article.id}});
+            const article_updated = await db.article.findOne({ where: { id: article.id } });
             const article_label = parent.classif.substring(0, 3) + '-' +
                 parent.article_type_name.substring(0, 3) + '-' +
                 article_updated.branch.substring(0, 3) + '-' + article_updated.id;
 
             const register_label = await db.article.update({
                 label: article_label.toUpperCase()
-            },{
-                where: {id: article_updated.id}
+            }, {
+                where: { id: article_updated.id }
             });
 
-            if(parent.is_parent === 0){
+            if (parent.is_parent === 0) {
                 res.status(200).send({
                     message: 'El artículo fue modificado con éxito.'
                 });
-            }else{
-                const asociate = await db.article.findAll({where: { article_fk: article.id}});
+            } else {
+                const asociate = await db.article.findAll({ where: { article_fk: article.id } });
                 for (var i = 0; i < asociate.length; i++) {
-                    const parent_asociate = await db.article_type.findOne({ 
-                        where: { id: asociate[i].article_type_fk } 
+                    const parent_asociate = await db.article_type.findOne({
+                        where: { id: asociate[i].article_type_fk }
                     });
                     const register_asociate = await db.article.update({
                         available_state: article_updated.available_state,
                         branch: article_updated.branch,
                         warehouse_fk: article_updated.warehouse_fk,
-                    },{
-                        where:{ id: asociate[i].id }
+                    }, {
+                        where: { id: asociate[i].id }
                     });
-                    const asociate_updated = await db.article.findOne({ where: {id: asociate[i].id}});
-                    const asociate_label = parent_asociate.classif.substring(0,3)+ '-' +
-                    parent_asociate.article_type_name.substring(0,3)+ '-' +
-                    asociate_updated.branch.substring(0,3)+ '-' + asociate_updated.id;
+                    const asociate_updated = await db.article.findOne({ where: { id: asociate[i].id } });
+                    const asociate_label = parent_asociate.classif.substring(0, 3) + '-' +
+                        parent_asociate.article_type_name.substring(0, 3) + '-' +
+                        asociate_updated.branch.substring(0, 3) + '-' + asociate_updated.id;
 
                     const register_label_asociate = await db.article.update({
                         label: asociate_label.toUpperCase()
-                    },{
-                        where: {id: asociate_updated.id}
-                    }); 
-                }  
+                    }, {
+                        where: { id: asociate_updated.id }
+                    });
+                }
                 res.status(200).send({
                     message: 'El artículo y sus articulos asociados fueron modificados con éxito.'
-                });  
+                });
             }
         }
     } catch (error) {
@@ -336,7 +336,7 @@ exports.update = async (req, res, next) => {
     }
 };
 
-exports.makefile = async (req,res,next) =>{
+exports.makefile = async (req, res, next) => {
     try {
         const articles = await db.article.findAndCountAll({
             include: [{
@@ -356,21 +356,21 @@ exports.makefile = async (req,res,next) =>{
         });
 
         const excel = exportsArticlesToExcel(articles);
-        
-        res.download(excel,(err) =>{
-            if(err){
+
+        res.download(excel, (err) => {
+            if (err) {
                 fs.unlinkSync(excel);
                 res.status(404).send({
                     message: "Error al generar el archivo."
-                }); 
+                });
             }
             fs.unlinkSync(excel);
-        });        
+        });
     } catch (error) {
         res.status(500).send({
             error: '¡Error en el servidor!'
         })
-        next(error); 
+        next(error);
     }
 }
 
@@ -386,11 +386,14 @@ exports.delete = async (req, res, next) => {
 
         if (article.count != 0) {
             const [results, metadata] = await db.sequelize.query(
-                `SELECT * FROM articles a 
-                JOIN reservations r ON a.id = r.article_fk 
-                JOIN borrowings b ON b.id = r.borrowing_fk 
+                `SELECT DISTINCT a.* FROM articles a 
+                LEFT JOIN reservations r ON a.id = r.article_fk 
+                LEFT JOIN borrowings b ON b.id = r.borrowing_fk 
                 LEFT JOIN returnings rt ON rt.borrowing_fk = b.id
-                WHERE rt.auth_state = "Pendiente" OR b.auth_state = "Pendiente" OR a.available_state = "Prestado"`
+                WHERE (UPPER(rt.auth_state) = "PENDIENTE" 
+                OR UPPER(b.auth_state) = "PENDIENTE" 
+                OR UPPER(a.available_state) = "PRESTADO")
+                AND a.id = ${article_id}`
             );
 
             if (results.length == 0) {

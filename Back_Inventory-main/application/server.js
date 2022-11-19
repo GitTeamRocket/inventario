@@ -24,8 +24,9 @@ const storage = multer.diskStorage({
         cb(null, path.join(__dirname, '/article_images_uploads'));
     },
     filename: function(req, file, cb){
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, `${file.originalname}-${uniqueSuffix}`);
+        const originalname = file.originalname.split(".");
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, `${originalname[0]}-${uniqueSuffix}.${originalname[1]}`);
     }
 });
 
